@@ -1,7 +1,7 @@
 // Code generated - DO NOT EDIT.
 // This file is a generated binding and any manual changes will be lost.
 
-package api
+package project
 
 import (
 	"math/big"
@@ -26,6 +26,214 @@ var (
 	_ = types.BloomLookup
 	_ = event.NewSubscription
 )
+
+// BasicProjectWalletABI is the input ABI used to generate the binding from.
+const BasicProjectWalletABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_receiver\",\"type\":\"address\"},{\"name\":\"_amt\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_token\",\"type\":\"address\"},{\"name\":\"_authoriser\",\"type\":\"address\"},{\"name\":\"_name\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}]"
+
+// BasicProjectWalletBin is the compiled bytecode used for deploying new contracts.
+const BasicProjectWalletBin = `0x608060405234801561001057600080fd5b5060405160608061029983398101604090815281516020830151919092015160008054600160a060020a03948516600160a060020a03199182161790915560018054949093169316929092179055600255610229806100706000396000f30060806040526004361061004b5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166306fdde038114610050578063a9059cbb14610077575b600080fd5b34801561005c57600080fd5b506100656100bc565b60408051918252519081900360200190f35b34801561008357600080fd5b506100a873ffffffffffffffffffffffffffffffffffffffff600435166024356100c2565b604080519115158252519081900360200190f35b60025481565b60015460009073ffffffffffffffffffffffffffffffffffffffff16331461014b57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b60008054604080517fa9059cbb00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8781166004830152602482018790529151919092169263a9059cbb92604480820193602093909283900390910190829087803b1580156101ca57600080fd5b505af11580156101de573d6000803e3d6000fd5b505050506040513d60208110156101f457600080fd5b509093925050505600a165627a7a72305820a57f44df56894921b295f5260067fe533d856755c79ff5af9d7e46f1324c122b0029`
+
+// DeployBasicProjectWallet deploys a new Ethereum contract, binding an instance of BasicProjectWallet to it.
+func DeployBasicProjectWallet(auth *bind.TransactOpts, backend bind.ContractBackend, _token common.Address, _authoriser common.Address, _name [32]byte) (common.Address, *types.Transaction, *BasicProjectWallet, error) {
+	parsed, err := abi.JSON(strings.NewReader(BasicProjectWalletABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(BasicProjectWalletBin), backend, _token, _authoriser, _name)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &BasicProjectWallet{BasicProjectWalletCaller: BasicProjectWalletCaller{contract: contract}, BasicProjectWalletTransactor: BasicProjectWalletTransactor{contract: contract}, BasicProjectWalletFilterer: BasicProjectWalletFilterer{contract: contract}}, nil
+}
+
+// BasicProjectWallet is an auto generated Go binding around an Ethereum contract.
+type BasicProjectWallet struct {
+	BasicProjectWalletCaller     // Read-only binding to the contract
+	BasicProjectWalletTransactor // Write-only binding to the contract
+	BasicProjectWalletFilterer   // Log filterer for contract events
+}
+
+// BasicProjectWalletCaller is an auto generated read-only Go binding around an Ethereum contract.
+type BasicProjectWalletCaller struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// BasicProjectWalletTransactor is an auto generated write-only Go binding around an Ethereum contract.
+type BasicProjectWalletTransactor struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// BasicProjectWalletFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
+type BasicProjectWalletFilterer struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// BasicProjectWalletSession is an auto generated Go binding around an Ethereum contract,
+// with pre-set call and transact options.
+type BasicProjectWalletSession struct {
+	Contract     *BasicProjectWallet // Generic contract binding to set the session for
+	CallOpts     bind.CallOpts       // Call options to use throughout this session
+	TransactOpts bind.TransactOpts   // Transaction auth options to use throughout this session
+}
+
+// BasicProjectWalletCallerSession is an auto generated read-only Go binding around an Ethereum contract,
+// with pre-set call options.
+type BasicProjectWalletCallerSession struct {
+	Contract *BasicProjectWalletCaller // Generic contract caller binding to set the session for
+	CallOpts bind.CallOpts             // Call options to use throughout this session
+}
+
+// BasicProjectWalletTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
+// with pre-set transact options.
+type BasicProjectWalletTransactorSession struct {
+	Contract     *BasicProjectWalletTransactor // Generic contract transactor binding to set the session for
+	TransactOpts bind.TransactOpts             // Transaction auth options to use throughout this session
+}
+
+// BasicProjectWalletRaw is an auto generated low-level Go binding around an Ethereum contract.
+type BasicProjectWalletRaw struct {
+	Contract *BasicProjectWallet // Generic contract binding to access the raw methods on
+}
+
+// BasicProjectWalletCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
+type BasicProjectWalletCallerRaw struct {
+	Contract *BasicProjectWalletCaller // Generic read-only contract binding to access the raw methods on
+}
+
+// BasicProjectWalletTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
+type BasicProjectWalletTransactorRaw struct {
+	Contract *BasicProjectWalletTransactor // Generic write-only contract binding to access the raw methods on
+}
+
+// NewBasicProjectWallet creates a new instance of BasicProjectWallet, bound to a specific deployed contract.
+func NewBasicProjectWallet(address common.Address, backend bind.ContractBackend) (*BasicProjectWallet, error) {
+	contract, err := bindBasicProjectWallet(address, backend, backend, backend)
+	if err != nil {
+		return nil, err
+	}
+	return &BasicProjectWallet{BasicProjectWalletCaller: BasicProjectWalletCaller{contract: contract}, BasicProjectWalletTransactor: BasicProjectWalletTransactor{contract: contract}, BasicProjectWalletFilterer: BasicProjectWalletFilterer{contract: contract}}, nil
+}
+
+// NewBasicProjectWalletCaller creates a new read-only instance of BasicProjectWallet, bound to a specific deployed contract.
+func NewBasicProjectWalletCaller(address common.Address, caller bind.ContractCaller) (*BasicProjectWalletCaller, error) {
+	contract, err := bindBasicProjectWallet(address, caller, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &BasicProjectWalletCaller{contract: contract}, nil
+}
+
+// NewBasicProjectWalletTransactor creates a new write-only instance of BasicProjectWallet, bound to a specific deployed contract.
+func NewBasicProjectWalletTransactor(address common.Address, transactor bind.ContractTransactor) (*BasicProjectWalletTransactor, error) {
+	contract, err := bindBasicProjectWallet(address, nil, transactor, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &BasicProjectWalletTransactor{contract: contract}, nil
+}
+
+// NewBasicProjectWalletFilterer creates a new log filterer instance of BasicProjectWallet, bound to a specific deployed contract.
+func NewBasicProjectWalletFilterer(address common.Address, filterer bind.ContractFilterer) (*BasicProjectWalletFilterer, error) {
+	contract, err := bindBasicProjectWallet(address, nil, nil, filterer)
+	if err != nil {
+		return nil, err
+	}
+	return &BasicProjectWalletFilterer{contract: contract}, nil
+}
+
+// bindBasicProjectWallet binds a generic wrapper to an already deployed contract.
+func bindBasicProjectWallet(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
+	parsed, err := abi.JSON(strings.NewReader(BasicProjectWalletABI))
+	if err != nil {
+		return nil, err
+	}
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_BasicProjectWallet *BasicProjectWalletRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _BasicProjectWallet.Contract.BasicProjectWalletCaller.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_BasicProjectWallet *BasicProjectWalletRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _BasicProjectWallet.Contract.BasicProjectWalletTransactor.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_BasicProjectWallet *BasicProjectWalletRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _BasicProjectWallet.Contract.BasicProjectWalletTransactor.contract.Transact(opts, method, params...)
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_BasicProjectWallet *BasicProjectWalletCallerRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _BasicProjectWallet.Contract.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_BasicProjectWallet *BasicProjectWalletTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _BasicProjectWallet.Contract.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_BasicProjectWallet *BasicProjectWalletTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _BasicProjectWallet.Contract.contract.Transact(opts, method, params...)
+}
+
+// Name is a free data retrieval call binding the contract method 0x06fdde03.
+//
+// Solidity: function name() constant returns(bytes32)
+func (_BasicProjectWallet *BasicProjectWalletCaller) Name(opts *bind.CallOpts) ([32]byte, error) {
+	var (
+		ret0 = new([32]byte)
+	)
+	out := ret0
+	err := _BasicProjectWallet.contract.Call(opts, out, "name")
+	return *ret0, err
+}
+
+// Name is a free data retrieval call binding the contract method 0x06fdde03.
+//
+// Solidity: function name() constant returns(bytes32)
+func (_BasicProjectWallet *BasicProjectWalletSession) Name() ([32]byte, error) {
+	return _BasicProjectWallet.Contract.Name(&_BasicProjectWallet.CallOpts)
+}
+
+// Name is a free data retrieval call binding the contract method 0x06fdde03.
+//
+// Solidity: function name() constant returns(bytes32)
+func (_BasicProjectWallet *BasicProjectWalletCallerSession) Name() ([32]byte, error) {
+	return _BasicProjectWallet.Contract.Name(&_BasicProjectWallet.CallOpts)
+}
+
+// Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
+//
+// Solidity: function transfer(_receiver address, _amt uint256) returns(bool)
+func (_BasicProjectWallet *BasicProjectWalletTransactor) Transfer(opts *bind.TransactOpts, _receiver common.Address, _amt *big.Int) (*types.Transaction, error) {
+	return _BasicProjectWallet.contract.Transact(opts, "transfer", _receiver, _amt)
+}
+
+// Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
+//
+// Solidity: function transfer(_receiver address, _amt uint256) returns(bool)
+func (_BasicProjectWallet *BasicProjectWalletSession) Transfer(_receiver common.Address, _amt *big.Int) (*types.Transaction, error) {
+	return _BasicProjectWallet.Contract.Transfer(&_BasicProjectWallet.TransactOpts, _receiver, _amt)
+}
+
+// Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
+//
+// Solidity: function transfer(_receiver address, _amt uint256) returns(bool)
+func (_BasicProjectWallet *BasicProjectWalletTransactorSession) Transfer(_receiver common.Address, _amt *big.Int) (*types.Transaction, error) {
+	return _BasicProjectWallet.Contract.Transfer(&_BasicProjectWallet.TransactOpts, _receiver, _amt)
+}
 
 // ERC20ABI is the input ABI used to generate the binding from.
 const ERC20ABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_spender\",\"type\":\"address\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_from\",\"type\":\"address\"},{\"name\":\"_to\",\"type\":\"address\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_who\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_owner\",\"type\":\"address\"},{\"name\":\"_spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"}]"
@@ -2369,6 +2577,940 @@ func (_Ownable *OwnableFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts,
 				// New log arrived, parse the event and forward to the user
 				event := new(OwnableOwnershipTransferred)
 				if err := _Ownable.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ProjectWalletABI is the input ABI used to generate the binding from.
+const ProjectWalletABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_receiver\",\"type\":\"address\"},{\"name\":\"_amt\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+
+// ProjectWalletBin is the compiled bytecode used for deploying new contracts.
+const ProjectWalletBin = `0x`
+
+// DeployProjectWallet deploys a new Ethereum contract, binding an instance of ProjectWallet to it.
+func DeployProjectWallet(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *ProjectWallet, error) {
+	parsed, err := abi.JSON(strings.NewReader(ProjectWalletABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(ProjectWalletBin), backend)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &ProjectWallet{ProjectWalletCaller: ProjectWalletCaller{contract: contract}, ProjectWalletTransactor: ProjectWalletTransactor{contract: contract}, ProjectWalletFilterer: ProjectWalletFilterer{contract: contract}}, nil
+}
+
+// ProjectWallet is an auto generated Go binding around an Ethereum contract.
+type ProjectWallet struct {
+	ProjectWalletCaller     // Read-only binding to the contract
+	ProjectWalletTransactor // Write-only binding to the contract
+	ProjectWalletFilterer   // Log filterer for contract events
+}
+
+// ProjectWalletCaller is an auto generated read-only Go binding around an Ethereum contract.
+type ProjectWalletCaller struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletTransactor is an auto generated write-only Go binding around an Ethereum contract.
+type ProjectWalletTransactor struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
+type ProjectWalletFilterer struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletSession is an auto generated Go binding around an Ethereum contract,
+// with pre-set call and transact options.
+type ProjectWalletSession struct {
+	Contract     *ProjectWallet    // Generic contract binding to set the session for
+	CallOpts     bind.CallOpts     // Call options to use throughout this session
+	TransactOpts bind.TransactOpts // Transaction auth options to use throughout this session
+}
+
+// ProjectWalletCallerSession is an auto generated read-only Go binding around an Ethereum contract,
+// with pre-set call options.
+type ProjectWalletCallerSession struct {
+	Contract *ProjectWalletCaller // Generic contract caller binding to set the session for
+	CallOpts bind.CallOpts        // Call options to use throughout this session
+}
+
+// ProjectWalletTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
+// with pre-set transact options.
+type ProjectWalletTransactorSession struct {
+	Contract     *ProjectWalletTransactor // Generic contract transactor binding to set the session for
+	TransactOpts bind.TransactOpts        // Transaction auth options to use throughout this session
+}
+
+// ProjectWalletRaw is an auto generated low-level Go binding around an Ethereum contract.
+type ProjectWalletRaw struct {
+	Contract *ProjectWallet // Generic contract binding to access the raw methods on
+}
+
+// ProjectWalletCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
+type ProjectWalletCallerRaw struct {
+	Contract *ProjectWalletCaller // Generic read-only contract binding to access the raw methods on
+}
+
+// ProjectWalletTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
+type ProjectWalletTransactorRaw struct {
+	Contract *ProjectWalletTransactor // Generic write-only contract binding to access the raw methods on
+}
+
+// NewProjectWallet creates a new instance of ProjectWallet, bound to a specific deployed contract.
+func NewProjectWallet(address common.Address, backend bind.ContractBackend) (*ProjectWallet, error) {
+	contract, err := bindProjectWallet(address, backend, backend, backend)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWallet{ProjectWalletCaller: ProjectWalletCaller{contract: contract}, ProjectWalletTransactor: ProjectWalletTransactor{contract: contract}, ProjectWalletFilterer: ProjectWalletFilterer{contract: contract}}, nil
+}
+
+// NewProjectWalletCaller creates a new read-only instance of ProjectWallet, bound to a specific deployed contract.
+func NewProjectWalletCaller(address common.Address, caller bind.ContractCaller) (*ProjectWalletCaller, error) {
+	contract, err := bindProjectWallet(address, caller, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletCaller{contract: contract}, nil
+}
+
+// NewProjectWalletTransactor creates a new write-only instance of ProjectWallet, bound to a specific deployed contract.
+func NewProjectWalletTransactor(address common.Address, transactor bind.ContractTransactor) (*ProjectWalletTransactor, error) {
+	contract, err := bindProjectWallet(address, nil, transactor, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletTransactor{contract: contract}, nil
+}
+
+// NewProjectWalletFilterer creates a new log filterer instance of ProjectWallet, bound to a specific deployed contract.
+func NewProjectWalletFilterer(address common.Address, filterer bind.ContractFilterer) (*ProjectWalletFilterer, error) {
+	contract, err := bindProjectWallet(address, nil, nil, filterer)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletFilterer{contract: contract}, nil
+}
+
+// bindProjectWallet binds a generic wrapper to an already deployed contract.
+func bindProjectWallet(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
+	parsed, err := abi.JSON(strings.NewReader(ProjectWalletABI))
+	if err != nil {
+		return nil, err
+	}
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_ProjectWallet *ProjectWalletRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _ProjectWallet.Contract.ProjectWalletCaller.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_ProjectWallet *ProjectWalletRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWallet.Contract.ProjectWalletTransactor.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_ProjectWallet *ProjectWalletRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _ProjectWallet.Contract.ProjectWalletTransactor.contract.Transact(opts, method, params...)
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_ProjectWallet *ProjectWalletCallerRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _ProjectWallet.Contract.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_ProjectWallet *ProjectWalletTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWallet.Contract.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_ProjectWallet *ProjectWalletTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _ProjectWallet.Contract.contract.Transact(opts, method, params...)
+}
+
+// Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
+//
+// Solidity: function transfer(_receiver address, _amt uint256) returns(bool)
+func (_ProjectWallet *ProjectWalletTransactor) Transfer(opts *bind.TransactOpts, _receiver common.Address, _amt *big.Int) (*types.Transaction, error) {
+	return _ProjectWallet.contract.Transact(opts, "transfer", _receiver, _amt)
+}
+
+// Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
+//
+// Solidity: function transfer(_receiver address, _amt uint256) returns(bool)
+func (_ProjectWallet *ProjectWalletSession) Transfer(_receiver common.Address, _amt *big.Int) (*types.Transaction, error) {
+	return _ProjectWallet.Contract.Transfer(&_ProjectWallet.TransactOpts, _receiver, _amt)
+}
+
+// Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
+//
+// Solidity: function transfer(_receiver address, _amt uint256) returns(bool)
+func (_ProjectWallet *ProjectWalletTransactorSession) Transfer(_receiver common.Address, _amt *big.Int) (*types.Transaction, error) {
+	return _ProjectWallet.Contract.Transfer(&_ProjectWallet.TransactOpts, _receiver, _amt)
+}
+
+// ProjectWalletFactoryABI is the input ABI used to generate the binding from.
+const ProjectWalletFactoryABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_token\",\"type\":\"address\"},{\"name\":\"_authoriser\",\"type\":\"address\"},{\"name\":\"_name\",\"type\":\"bytes32\"}],\"name\":\"createWallet\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+
+// ProjectWalletFactoryBin is the compiled bytecode used for deploying new contracts.
+const ProjectWalletFactoryBin = `0x608060405234801561001057600080fd5b50610491806100206000396000f3006080604052600436106100405763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663e8eef2708114610045575b600080fd5b34801561005157600080fd5b5061007c73ffffffffffffffffffffffffffffffffffffffff600435811690602435166044356100a5565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b6000807fff000000000000000000000000000000000000000000000000000000000000007f010000000000000000000000000000000000000000000000000000000000000084831a0216151561015c57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600c60248201527f496e76616c6964206e616d650000000000000000000000000000000000000000604482015290519081900360640190fd5b8484846101676101bc565b73ffffffffffffffffffffffffffffffffffffffff9384168152919092166020820152604080820192909252905190819003606001906000f0801580156101b2573d6000803e3d6000fd5b5095945050505050565b604051610299806101cd833901905600608060405234801561001057600080fd5b5060405160608061029983398101604090815281516020830151919092015160008054600160a060020a03948516600160a060020a03199182161790915560018054949093169316929092179055600255610229806100706000396000f30060806040526004361061004b5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166306fdde038114610050578063a9059cbb14610077575b600080fd5b34801561005c57600080fd5b506100656100bc565b60408051918252519081900360200190f35b34801561008357600080fd5b506100a873ffffffffffffffffffffffffffffffffffffffff600435166024356100c2565b604080519115158252519081900360200190f35b60025481565b60015460009073ffffffffffffffffffffffffffffffffffffffff16331461014b57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b60008054604080517fa9059cbb00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8781166004830152602482018790529151919092169263a9059cbb92604480820193602093909283900390910190829087803b1580156101ca57600080fd5b505af11580156101de573d6000803e3d6000fd5b505050506040513d60208110156101f457600080fd5b509093925050505600a165627a7a72305820a57f44df56894921b295f5260067fe533d856755c79ff5af9d7e46f1324c122b0029a165627a7a723058206b16a3976414825fc4ed35e8a22423602f47b8e1f8d4090ecbb2782879a6f0b40029`
+
+// DeployProjectWalletFactory deploys a new Ethereum contract, binding an instance of ProjectWalletFactory to it.
+func DeployProjectWalletFactory(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *ProjectWalletFactory, error) {
+	parsed, err := abi.JSON(strings.NewReader(ProjectWalletFactoryABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(ProjectWalletFactoryBin), backend)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &ProjectWalletFactory{ProjectWalletFactoryCaller: ProjectWalletFactoryCaller{contract: contract}, ProjectWalletFactoryTransactor: ProjectWalletFactoryTransactor{contract: contract}, ProjectWalletFactoryFilterer: ProjectWalletFactoryFilterer{contract: contract}}, nil
+}
+
+// ProjectWalletFactory is an auto generated Go binding around an Ethereum contract.
+type ProjectWalletFactory struct {
+	ProjectWalletFactoryCaller     // Read-only binding to the contract
+	ProjectWalletFactoryTransactor // Write-only binding to the contract
+	ProjectWalletFactoryFilterer   // Log filterer for contract events
+}
+
+// ProjectWalletFactoryCaller is an auto generated read-only Go binding around an Ethereum contract.
+type ProjectWalletFactoryCaller struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletFactoryTransactor is an auto generated write-only Go binding around an Ethereum contract.
+type ProjectWalletFactoryTransactor struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletFactoryFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
+type ProjectWalletFactoryFilterer struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletFactorySession is an auto generated Go binding around an Ethereum contract,
+// with pre-set call and transact options.
+type ProjectWalletFactorySession struct {
+	Contract     *ProjectWalletFactory // Generic contract binding to set the session for
+	CallOpts     bind.CallOpts         // Call options to use throughout this session
+	TransactOpts bind.TransactOpts     // Transaction auth options to use throughout this session
+}
+
+// ProjectWalletFactoryCallerSession is an auto generated read-only Go binding around an Ethereum contract,
+// with pre-set call options.
+type ProjectWalletFactoryCallerSession struct {
+	Contract *ProjectWalletFactoryCaller // Generic contract caller binding to set the session for
+	CallOpts bind.CallOpts               // Call options to use throughout this session
+}
+
+// ProjectWalletFactoryTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
+// with pre-set transact options.
+type ProjectWalletFactoryTransactorSession struct {
+	Contract     *ProjectWalletFactoryTransactor // Generic contract transactor binding to set the session for
+	TransactOpts bind.TransactOpts               // Transaction auth options to use throughout this session
+}
+
+// ProjectWalletFactoryRaw is an auto generated low-level Go binding around an Ethereum contract.
+type ProjectWalletFactoryRaw struct {
+	Contract *ProjectWalletFactory // Generic contract binding to access the raw methods on
+}
+
+// ProjectWalletFactoryCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
+type ProjectWalletFactoryCallerRaw struct {
+	Contract *ProjectWalletFactoryCaller // Generic read-only contract binding to access the raw methods on
+}
+
+// ProjectWalletFactoryTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
+type ProjectWalletFactoryTransactorRaw struct {
+	Contract *ProjectWalletFactoryTransactor // Generic write-only contract binding to access the raw methods on
+}
+
+// NewProjectWalletFactory creates a new instance of ProjectWalletFactory, bound to a specific deployed contract.
+func NewProjectWalletFactory(address common.Address, backend bind.ContractBackend) (*ProjectWalletFactory, error) {
+	contract, err := bindProjectWalletFactory(address, backend, backend, backend)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletFactory{ProjectWalletFactoryCaller: ProjectWalletFactoryCaller{contract: contract}, ProjectWalletFactoryTransactor: ProjectWalletFactoryTransactor{contract: contract}, ProjectWalletFactoryFilterer: ProjectWalletFactoryFilterer{contract: contract}}, nil
+}
+
+// NewProjectWalletFactoryCaller creates a new read-only instance of ProjectWalletFactory, bound to a specific deployed contract.
+func NewProjectWalletFactoryCaller(address common.Address, caller bind.ContractCaller) (*ProjectWalletFactoryCaller, error) {
+	contract, err := bindProjectWalletFactory(address, caller, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletFactoryCaller{contract: contract}, nil
+}
+
+// NewProjectWalletFactoryTransactor creates a new write-only instance of ProjectWalletFactory, bound to a specific deployed contract.
+func NewProjectWalletFactoryTransactor(address common.Address, transactor bind.ContractTransactor) (*ProjectWalletFactoryTransactor, error) {
+	contract, err := bindProjectWalletFactory(address, nil, transactor, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletFactoryTransactor{contract: contract}, nil
+}
+
+// NewProjectWalletFactoryFilterer creates a new log filterer instance of ProjectWalletFactory, bound to a specific deployed contract.
+func NewProjectWalletFactoryFilterer(address common.Address, filterer bind.ContractFilterer) (*ProjectWalletFactoryFilterer, error) {
+	contract, err := bindProjectWalletFactory(address, nil, nil, filterer)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletFactoryFilterer{contract: contract}, nil
+}
+
+// bindProjectWalletFactory binds a generic wrapper to an already deployed contract.
+func bindProjectWalletFactory(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
+	parsed, err := abi.JSON(strings.NewReader(ProjectWalletFactoryABI))
+	if err != nil {
+		return nil, err
+	}
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_ProjectWalletFactory *ProjectWalletFactoryRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _ProjectWalletFactory.Contract.ProjectWalletFactoryCaller.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_ProjectWalletFactory *ProjectWalletFactoryRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWalletFactory.Contract.ProjectWalletFactoryTransactor.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_ProjectWalletFactory *ProjectWalletFactoryRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _ProjectWalletFactory.Contract.ProjectWalletFactoryTransactor.contract.Transact(opts, method, params...)
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_ProjectWalletFactory *ProjectWalletFactoryCallerRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _ProjectWalletFactory.Contract.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_ProjectWalletFactory *ProjectWalletFactoryTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWalletFactory.Contract.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_ProjectWalletFactory *ProjectWalletFactoryTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _ProjectWalletFactory.Contract.contract.Transact(opts, method, params...)
+}
+
+// CreateWallet is a paid mutator transaction binding the contract method 0xe8eef270.
+//
+// Solidity: function createWallet(_token address, _authoriser address, _name bytes32) returns(address)
+func (_ProjectWalletFactory *ProjectWalletFactoryTransactor) CreateWallet(opts *bind.TransactOpts, _token common.Address, _authoriser common.Address, _name [32]byte) (*types.Transaction, error) {
+	return _ProjectWalletFactory.contract.Transact(opts, "createWallet", _token, _authoriser, _name)
+}
+
+// CreateWallet is a paid mutator transaction binding the contract method 0xe8eef270.
+//
+// Solidity: function createWallet(_token address, _authoriser address, _name bytes32) returns(address)
+func (_ProjectWalletFactory *ProjectWalletFactorySession) CreateWallet(_token common.Address, _authoriser common.Address, _name [32]byte) (*types.Transaction, error) {
+	return _ProjectWalletFactory.Contract.CreateWallet(&_ProjectWalletFactory.TransactOpts, _token, _authoriser, _name)
+}
+
+// CreateWallet is a paid mutator transaction binding the contract method 0xe8eef270.
+//
+// Solidity: function createWallet(_token address, _authoriser address, _name bytes32) returns(address)
+func (_ProjectWalletFactory *ProjectWalletFactoryTransactorSession) CreateWallet(_token common.Address, _authoriser common.Address, _name [32]byte) (*types.Transaction, error) {
+	return _ProjectWalletFactory.Contract.CreateWallet(&_ProjectWalletFactory.TransactOpts, _token, _authoriser, _name)
+}
+
+// ProjectWalletRegistryABI is the input ABI used to generate the binding from.
+const ProjectWalletRegistryABI = "[{\"constant\":true,\"inputs\":[{\"name\":\"_name\",\"type\":\"bytes32\"}],\"name\":\"walletOf\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_name\",\"type\":\"bytes32\"}],\"name\":\"ensureWallet\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_factory\",\"type\":\"address\"}],\"name\":\"setFactory\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_token\",\"type\":\"address\"},{\"name\":\"_authoriser\",\"type\":\"address\"},{\"name\":\"_factory\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+
+// ProjectWalletRegistryBin is the compiled bytecode used for deploying new contracts.
+const ProjectWalletRegistryBin = `0x608060405234801561001057600080fd5b506040516060806106c08339810160409081528151602083015191909201516000805433600160a060020a0319918216178255600180548216600160a060020a0396871617905560028054821694861694909417909355600380549093169390911692909217905561063890819061008890396000f3006080604052600436106100775763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166309521458811461007c5780634ea06936146100b05780635bb47808146100c8578063715018a6146100eb5780638da5cb5b14610100578063f2fde38b14610115575b600080fd5b34801561008857600080fd5b50610094600435610136565b60408051600160a060020a039092168252519081900360200190f35b3480156100bc57600080fd5b50610094600435610151565b3480156100d457600080fd5b506100e9600160a060020a0360043516610235565b005b3480156100f757600080fd5b506100e9610328565b34801561010c57600080fd5b506100946103df565b34801561012157600080fd5b506100e9600160a060020a03600435166103ee565b600090815260046020526040902054600160a060020a031690565b6000807fff000000000000000000000000000000000000000000000000000000000000007f010000000000000000000000000000000000000000000000000000000000000084831a021615156101f1576040805160e560020a62461bcd02815260206004820152600c60248201527f496e76616c6964206e616d650000000000000000000000000000000000000000604482015290519081900360640190fd5b600083815260046020526040902054600160a060020a03161515610218576102188361045c565b5050600090815260046020526040902054600160a060020a031690565b600054600160a060020a03163314610297576040805160e560020a62461bcd02815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b600354600160a060020a031615156102f9576040805160e560020a62461bcd02815260206004820152600f60248201527f496e76616c696420666163746f72790000000000000000000000000000000000604482015290519081900360640190fd5b6003805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0392909216919091179055565b600054600160a060020a0316331461038a576040805160e560020a62461bcd02815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b60008054604051600160a060020a03909116917ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482091a26000805473ffffffffffffffffffffffffffffffffffffffff19169055565b600054600160a060020a031681565b600054600160a060020a03163314610450576040805160e560020a62461bcd02815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b61045981610544565b50565b600354600154600254604080517fe8eef270000000000000000000000000000000000000000000000000000000008152600160a060020a03938416600482015291831660248301526044820185905251600093929092169163e8eef2709160648082019260209290919082900301818787803b1580156104db57600080fd5b505af11580156104ef573d6000803e3d6000fd5b505050506040513d602081101561050557600080fd5b5051600092835260046020526040909220805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039093169290921790915550565b600160a060020a03811615156105a4576040805160e560020a62461bcd02815260206004820152601560248201527f43616e2774207472616e7366657220746f203078300000000000000000000000604482015290519081900360640190fd5b60008054604051600160a060020a03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a36000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03929092169190911790555600a165627a7a72305820a593ba3fa7deac056725200706eb1c670c4337651567b370f17c5ad92d87c1850029`
+
+// DeployProjectWalletRegistry deploys a new Ethereum contract, binding an instance of ProjectWalletRegistry to it.
+func DeployProjectWalletRegistry(auth *bind.TransactOpts, backend bind.ContractBackend, _token common.Address, _authoriser common.Address, _factory common.Address) (common.Address, *types.Transaction, *ProjectWalletRegistry, error) {
+	parsed, err := abi.JSON(strings.NewReader(ProjectWalletRegistryABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(ProjectWalletRegistryBin), backend, _token, _authoriser, _factory)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &ProjectWalletRegistry{ProjectWalletRegistryCaller: ProjectWalletRegistryCaller{contract: contract}, ProjectWalletRegistryTransactor: ProjectWalletRegistryTransactor{contract: contract}, ProjectWalletRegistryFilterer: ProjectWalletRegistryFilterer{contract: contract}}, nil
+}
+
+// ProjectWalletRegistry is an auto generated Go binding around an Ethereum contract.
+type ProjectWalletRegistry struct {
+	ProjectWalletRegistryCaller     // Read-only binding to the contract
+	ProjectWalletRegistryTransactor // Write-only binding to the contract
+	ProjectWalletRegistryFilterer   // Log filterer for contract events
+}
+
+// ProjectWalletRegistryCaller is an auto generated read-only Go binding around an Ethereum contract.
+type ProjectWalletRegistryCaller struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletRegistryTransactor is an auto generated write-only Go binding around an Ethereum contract.
+type ProjectWalletRegistryTransactor struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletRegistryFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
+type ProjectWalletRegistryFilterer struct {
+	contract *bind.BoundContract // Generic contract wrapper for the low level calls
+}
+
+// ProjectWalletRegistrySession is an auto generated Go binding around an Ethereum contract,
+// with pre-set call and transact options.
+type ProjectWalletRegistrySession struct {
+	Contract     *ProjectWalletRegistry // Generic contract binding to set the session for
+	CallOpts     bind.CallOpts          // Call options to use throughout this session
+	TransactOpts bind.TransactOpts      // Transaction auth options to use throughout this session
+}
+
+// ProjectWalletRegistryCallerSession is an auto generated read-only Go binding around an Ethereum contract,
+// with pre-set call options.
+type ProjectWalletRegistryCallerSession struct {
+	Contract *ProjectWalletRegistryCaller // Generic contract caller binding to set the session for
+	CallOpts bind.CallOpts                // Call options to use throughout this session
+}
+
+// ProjectWalletRegistryTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
+// with pre-set transact options.
+type ProjectWalletRegistryTransactorSession struct {
+	Contract     *ProjectWalletRegistryTransactor // Generic contract transactor binding to set the session for
+	TransactOpts bind.TransactOpts                // Transaction auth options to use throughout this session
+}
+
+// ProjectWalletRegistryRaw is an auto generated low-level Go binding around an Ethereum contract.
+type ProjectWalletRegistryRaw struct {
+	Contract *ProjectWalletRegistry // Generic contract binding to access the raw methods on
+}
+
+// ProjectWalletRegistryCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
+type ProjectWalletRegistryCallerRaw struct {
+	Contract *ProjectWalletRegistryCaller // Generic read-only contract binding to access the raw methods on
+}
+
+// ProjectWalletRegistryTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
+type ProjectWalletRegistryTransactorRaw struct {
+	Contract *ProjectWalletRegistryTransactor // Generic write-only contract binding to access the raw methods on
+}
+
+// NewProjectWalletRegistry creates a new instance of ProjectWalletRegistry, bound to a specific deployed contract.
+func NewProjectWalletRegistry(address common.Address, backend bind.ContractBackend) (*ProjectWalletRegistry, error) {
+	contract, err := bindProjectWalletRegistry(address, backend, backend, backend)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletRegistry{ProjectWalletRegistryCaller: ProjectWalletRegistryCaller{contract: contract}, ProjectWalletRegistryTransactor: ProjectWalletRegistryTransactor{contract: contract}, ProjectWalletRegistryFilterer: ProjectWalletRegistryFilterer{contract: contract}}, nil
+}
+
+// NewProjectWalletRegistryCaller creates a new read-only instance of ProjectWalletRegistry, bound to a specific deployed contract.
+func NewProjectWalletRegistryCaller(address common.Address, caller bind.ContractCaller) (*ProjectWalletRegistryCaller, error) {
+	contract, err := bindProjectWalletRegistry(address, caller, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletRegistryCaller{contract: contract}, nil
+}
+
+// NewProjectWalletRegistryTransactor creates a new write-only instance of ProjectWalletRegistry, bound to a specific deployed contract.
+func NewProjectWalletRegistryTransactor(address common.Address, transactor bind.ContractTransactor) (*ProjectWalletRegistryTransactor, error) {
+	contract, err := bindProjectWalletRegistry(address, nil, transactor, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletRegistryTransactor{contract: contract}, nil
+}
+
+// NewProjectWalletRegistryFilterer creates a new log filterer instance of ProjectWalletRegistry, bound to a specific deployed contract.
+func NewProjectWalletRegistryFilterer(address common.Address, filterer bind.ContractFilterer) (*ProjectWalletRegistryFilterer, error) {
+	contract, err := bindProjectWalletRegistry(address, nil, nil, filterer)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletRegistryFilterer{contract: contract}, nil
+}
+
+// bindProjectWalletRegistry binds a generic wrapper to an already deployed contract.
+func bindProjectWalletRegistry(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
+	parsed, err := abi.JSON(strings.NewReader(ProjectWalletRegistryABI))
+	if err != nil {
+		return nil, err
+	}
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_ProjectWalletRegistry *ProjectWalletRegistryRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _ProjectWalletRegistry.Contract.ProjectWalletRegistryCaller.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_ProjectWalletRegistry *ProjectWalletRegistryRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.ProjectWalletRegistryTransactor.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_ProjectWalletRegistry *ProjectWalletRegistryRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.ProjectWalletRegistryTransactor.contract.Transact(opts, method, params...)
+}
+
+// Call invokes the (constant) contract method with params as input values and
+// sets the output to result. The result type might be a single field for simple
+// returns, a slice of interfaces for anonymous returns and a struct for named
+// returns.
+func (_ProjectWalletRegistry *ProjectWalletRegistryCallerRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
+	return _ProjectWalletRegistry.Contract.contract.Call(opts, result, method, params...)
+}
+
+// Transfer initiates a plain transaction to move funds to the contract, calling
+// its default method if one is available.
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.contract.Transfer(opts)
+}
+
+// Transact invokes the (paid) contract method with params as input values.
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.contract.Transact(opts, method, params...)
+}
+
+// Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
+//
+// Solidity: function owner() constant returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
+	var (
+		ret0 = new(common.Address)
+	)
+	out := ret0
+	err := _ProjectWalletRegistry.contract.Call(opts, out, "owner")
+	return *ret0, err
+}
+
+// Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
+//
+// Solidity: function owner() constant returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistrySession) Owner() (common.Address, error) {
+	return _ProjectWalletRegistry.Contract.Owner(&_ProjectWalletRegistry.CallOpts)
+}
+
+// Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
+//
+// Solidity: function owner() constant returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryCallerSession) Owner() (common.Address, error) {
+	return _ProjectWalletRegistry.Contract.Owner(&_ProjectWalletRegistry.CallOpts)
+}
+
+// WalletOf is a free data retrieval call binding the contract method 0x09521458.
+//
+// Solidity: function walletOf(_name bytes32) constant returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryCaller) WalletOf(opts *bind.CallOpts, _name [32]byte) (common.Address, error) {
+	var (
+		ret0 = new(common.Address)
+	)
+	out := ret0
+	err := _ProjectWalletRegistry.contract.Call(opts, out, "walletOf", _name)
+	return *ret0, err
+}
+
+// WalletOf is a free data retrieval call binding the contract method 0x09521458.
+//
+// Solidity: function walletOf(_name bytes32) constant returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistrySession) WalletOf(_name [32]byte) (common.Address, error) {
+	return _ProjectWalletRegistry.Contract.WalletOf(&_ProjectWalletRegistry.CallOpts, _name)
+}
+
+// WalletOf is a free data retrieval call binding the contract method 0x09521458.
+//
+// Solidity: function walletOf(_name bytes32) constant returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryCallerSession) WalletOf(_name [32]byte) (common.Address, error) {
+	return _ProjectWalletRegistry.Contract.WalletOf(&_ProjectWalletRegistry.CallOpts, _name)
+}
+
+// EnsureWallet is a paid mutator transaction binding the contract method 0x4ea06936.
+//
+// Solidity: function ensureWallet(_name bytes32) returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactor) EnsureWallet(opts *bind.TransactOpts, _name [32]byte) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.contract.Transact(opts, "ensureWallet", _name)
+}
+
+// EnsureWallet is a paid mutator transaction binding the contract method 0x4ea06936.
+//
+// Solidity: function ensureWallet(_name bytes32) returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistrySession) EnsureWallet(_name [32]byte) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.EnsureWallet(&_ProjectWalletRegistry.TransactOpts, _name)
+}
+
+// EnsureWallet is a paid mutator transaction binding the contract method 0x4ea06936.
+//
+// Solidity: function ensureWallet(_name bytes32) returns(address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactorSession) EnsureWallet(_name [32]byte) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.EnsureWallet(&_ProjectWalletRegistry.TransactOpts, _name)
+}
+
+// RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
+//
+// Solidity: function renounceOwnership() returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactor) RenounceOwnership(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.contract.Transact(opts, "renounceOwnership")
+}
+
+// RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
+//
+// Solidity: function renounceOwnership() returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistrySession) RenounceOwnership() (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.RenounceOwnership(&_ProjectWalletRegistry.TransactOpts)
+}
+
+// RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
+//
+// Solidity: function renounceOwnership() returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactorSession) RenounceOwnership() (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.RenounceOwnership(&_ProjectWalletRegistry.TransactOpts)
+}
+
+// SetFactory is a paid mutator transaction binding the contract method 0x5bb47808.
+//
+// Solidity: function setFactory(_factory address) returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactor) SetFactory(opts *bind.TransactOpts, _factory common.Address) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.contract.Transact(opts, "setFactory", _factory)
+}
+
+// SetFactory is a paid mutator transaction binding the contract method 0x5bb47808.
+//
+// Solidity: function setFactory(_factory address) returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistrySession) SetFactory(_factory common.Address) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.SetFactory(&_ProjectWalletRegistry.TransactOpts, _factory)
+}
+
+// SetFactory is a paid mutator transaction binding the contract method 0x5bb47808.
+//
+// Solidity: function setFactory(_factory address) returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactorSession) SetFactory(_factory common.Address) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.SetFactory(&_ProjectWalletRegistry.TransactOpts, _factory)
+}
+
+// TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
+//
+// Solidity: function transferOwnership(_newOwner address) returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactor) TransferOwnership(opts *bind.TransactOpts, _newOwner common.Address) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.contract.Transact(opts, "transferOwnership", _newOwner)
+}
+
+// TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
+//
+// Solidity: function transferOwnership(_newOwner address) returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistrySession) TransferOwnership(_newOwner common.Address) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.TransferOwnership(&_ProjectWalletRegistry.TransactOpts, _newOwner)
+}
+
+// TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
+//
+// Solidity: function transferOwnership(_newOwner address) returns()
+func (_ProjectWalletRegistry *ProjectWalletRegistryTransactorSession) TransferOwnership(_newOwner common.Address) (*types.Transaction, error) {
+	return _ProjectWalletRegistry.Contract.TransferOwnership(&_ProjectWalletRegistry.TransactOpts, _newOwner)
+}
+
+// ProjectWalletRegistryOwnershipRenouncedIterator is returned from FilterOwnershipRenounced and is used to iterate over the raw logs and unpacked data for OwnershipRenounced events raised by the ProjectWalletRegistry contract.
+type ProjectWalletRegistryOwnershipRenouncedIterator struct {
+	Event *ProjectWalletRegistryOwnershipRenounced // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ProjectWalletRegistryOwnershipRenouncedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ProjectWalletRegistryOwnershipRenounced)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ProjectWalletRegistryOwnershipRenounced)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ProjectWalletRegistryOwnershipRenouncedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ProjectWalletRegistryOwnershipRenouncedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ProjectWalletRegistryOwnershipRenounced represents a OwnershipRenounced event raised by the ProjectWalletRegistry contract.
+type ProjectWalletRegistryOwnershipRenounced struct {
+	PreviousOwner common.Address
+	Raw           types.Log // Blockchain specific contextual infos
+}
+
+// FilterOwnershipRenounced is a free log retrieval operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
+//
+// Solidity: e OwnershipRenounced(previousOwner indexed address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryFilterer) FilterOwnershipRenounced(opts *bind.FilterOpts, previousOwner []common.Address) (*ProjectWalletRegistryOwnershipRenouncedIterator, error) {
+
+	var previousOwnerRule []interface{}
+	for _, previousOwnerItem := range previousOwner {
+		previousOwnerRule = append(previousOwnerRule, previousOwnerItem)
+	}
+
+	logs, sub, err := _ProjectWalletRegistry.contract.FilterLogs(opts, "OwnershipRenounced", previousOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletRegistryOwnershipRenouncedIterator{contract: _ProjectWalletRegistry.contract, event: "OwnershipRenounced", logs: logs, sub: sub}, nil
+}
+
+// WatchOwnershipRenounced is a free log subscription operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
+//
+// Solidity: e OwnershipRenounced(previousOwner indexed address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryFilterer) WatchOwnershipRenounced(opts *bind.WatchOpts, sink chan<- *ProjectWalletRegistryOwnershipRenounced, previousOwner []common.Address) (event.Subscription, error) {
+
+	var previousOwnerRule []interface{}
+	for _, previousOwnerItem := range previousOwner {
+		previousOwnerRule = append(previousOwnerRule, previousOwnerItem)
+	}
+
+	logs, sub, err := _ProjectWalletRegistry.contract.WatchLogs(opts, "OwnershipRenounced", previousOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ProjectWalletRegistryOwnershipRenounced)
+				if err := _ProjectWalletRegistry.contract.UnpackLog(event, "OwnershipRenounced", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ProjectWalletRegistryOwnershipTransferredIterator is returned from FilterOwnershipTransferred and is used to iterate over the raw logs and unpacked data for OwnershipTransferred events raised by the ProjectWalletRegistry contract.
+type ProjectWalletRegistryOwnershipTransferredIterator struct {
+	Event *ProjectWalletRegistryOwnershipTransferred // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ProjectWalletRegistryOwnershipTransferredIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ProjectWalletRegistryOwnershipTransferred)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ProjectWalletRegistryOwnershipTransferred)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ProjectWalletRegistryOwnershipTransferredIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ProjectWalletRegistryOwnershipTransferredIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ProjectWalletRegistryOwnershipTransferred represents a OwnershipTransferred event raised by the ProjectWalletRegistry contract.
+type ProjectWalletRegistryOwnershipTransferred struct {
+	PreviousOwner common.Address
+	NewOwner      common.Address
+	Raw           types.Log // Blockchain specific contextual infos
+}
+
+// FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
+//
+// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*ProjectWalletRegistryOwnershipTransferredIterator, error) {
+
+	var previousOwnerRule []interface{}
+	for _, previousOwnerItem := range previousOwner {
+		previousOwnerRule = append(previousOwnerRule, previousOwnerItem)
+	}
+	var newOwnerRule []interface{}
+	for _, newOwnerItem := range newOwner {
+		newOwnerRule = append(newOwnerRule, newOwnerItem)
+	}
+
+	logs, sub, err := _ProjectWalletRegistry.contract.FilterLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ProjectWalletRegistryOwnershipTransferredIterator{contract: _ProjectWalletRegistry.contract, event: "OwnershipTransferred", logs: logs, sub: sub}, nil
+}
+
+// WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
+//
+// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
+func (_ProjectWalletRegistry *ProjectWalletRegistryFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *ProjectWalletRegistryOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
+
+	var previousOwnerRule []interface{}
+	for _, previousOwnerItem := range previousOwner {
+		previousOwnerRule = append(previousOwnerRule, previousOwnerItem)
+	}
+	var newOwnerRule []interface{}
+	for _, newOwnerItem := range newOwner {
+		newOwnerRule = append(newOwnerRule, newOwnerItem)
+	}
+
+	logs, sub, err := _ProjectWalletRegistry.contract.WatchLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ProjectWalletRegistryOwnershipTransferred)
+				if err := _ProjectWalletRegistry.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
 					return err
 				}
 				event.Raw = log

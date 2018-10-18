@@ -9,17 +9,15 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
-	abi "github.com/ixofoundation/ixo-go-abi/abi"
+	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 )
 
 func TestIxoErc20TokenContract(t *testing.T) {
 	key, _ := crypto.GenerateKey()
 	auth := bind.NewKeyedTransactor(key)
-	alloc := make(core.GenesisAlloc)
-	alloc[auth.From] = core.GenesisAccount{Balance: big.NewInt(1000000000)}
-	blockchain := backends.NewSimulatedBackend(alloc, 80000000)
+	blockchain := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000)}}, uint64(10000000))
 
-	_, _, ixoTokenContact, _ := abi.DeployIxoERC20Token(
+	_, _, ixoTokenContact, _ := token.DeployIxoERC20Token(
 		auth,
 		blockchain,
 	)
@@ -35,11 +33,13 @@ func TestIxoErc20TokenContract(t *testing.T) {
 	transOpts := bind.TransactOpts{
 		From:   auth.From,
 		Signer: auth.Signer,
-		Value:  nil,
 	}
 
 	// Test Token Name
 	t.Run("Check token name is correct", checkTokenName(*ixoTokenContact, callOpts))
+
+	// Test Token Symbol
+	t.Run("Check token symbol is correct", checkTokenSymbol(*ixoTokenContact, callOpts))
 
 	// Test Token CAP
 	t.Run("Check token cap is correct", checkTokenCap(*ixoTokenContact, callOpts))
@@ -56,7 +56,7 @@ func TestIxoErc20TokenContract(t *testing.T) {
 	t.Run("Check minting amount to address", mintTokenToAddress(*ixoTokenContact, callOpts, auth.From, *amountToMint))
 }
 
-func checkTokenName(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {
+func checkTokenName(ixoTokenContact token.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {
 	return func(t *testing.T) {
 		if tokenName, _ := ixoTokenContact.Name(&callOpts); tokenName != "IXO Token" {
 			t.Errorf("Expected tokenName to be: IXO Token")
@@ -64,7 +64,7 @@ func checkTokenName(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts) f
 	}
 }
 
-func checkTokenSymbol(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {
+func checkTokenSymbol(ixoTokenContact token.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {
 	return func(t *testing.T) {
 		if tokenSymbol, _ := ixoTokenContact.Symbol(&callOpts); tokenSymbol != "IXO" {
 			t.Errorf("Expected tokenName to be: IXO")
@@ -72,7 +72,7 @@ func checkTokenSymbol(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts)
 	}
 }
 
-func checkTokenCap(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {
+func checkTokenCap(ixoTokenContact token.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {
 	return func(t *testing.T) {
 		tokenCapCompare := big.NewInt(1000000000000000000)
 		if tokenCap, _ := ixoTokenContact.CAP(&callOpts); tokenCap.Cmp(tokenCapCompare) != 0 {
@@ -82,7 +82,7 @@ func checkTokenCap(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts) fu
 	}
 }
 
-func checkMinterAddress(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts, minterAddress common.Address) func(*testing.T) {
+func checkMinterAddress(ixoTokenContact token.IxoERC20Token, callOpts bind.CallOpts, minterAddress common.Address) func(*testing.T) {
 	return func(t *testing.T) {
 		if minter, _ := ixoTokenContact.Minter(&callOpts); minterAddress != minter {
 			t.Errorf("Expected minter to be: %v", minterAddress)
@@ -91,7 +91,7 @@ func checkMinterAddress(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpt
 	}
 }
 
-func mintTokenToAddress(ixoTokenContact abi.IxoERC20Token, callOpts bind.CallOpts, minterAddress common.Address, tokensMinted big.Int) func(*testing.T) {
+func mintTokenToAddress(ixoTokenContact token.IxoERC20Token, callOpts bind.CallOpts, minterAddress common.Address, tokensMinted big.Int) func(*testing.T) {
 	return func(t *testing.T) {
 		if tokenBalance, _ := ixoTokenContact.BalanceOf(&callOpts, minterAddress); tokensMinted.Cmp(tokenBalance) != 0 {
 			t.Errorf("Expected token balance to be: %v", tokensMinted)
