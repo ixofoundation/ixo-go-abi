@@ -13,7 +13,7 @@ import (
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 )
 
-func TestIxoErc20TokenContract(t *testing.T) {
+func TestAuthContract(t *testing.T) {
 	key, _ := crypto.GenerateKey()
 	authorizer := bind.NewKeyedTransactor(key)
 	projectWallet := bind.NewKeyedTransactor(key)
