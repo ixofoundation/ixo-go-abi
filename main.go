@@ -15,25 +15,18 @@ import (
 )
 
 func main() {
+	ropstenAccount := generateTransactorFromPvtKey("D55B3040D0442BBBDA8593C847E2BF4561CB942C63931609BE0992B7FCB19673")
+	ropstenAccount.GasLimit = uint64(5000000)
 
-	// My Robsten Account
-	privateKey, err := crypto.HexToECDSA("D55B3040D0442BBBDA8593C847E2BF4561CB942C63931609BE0992B7FCB19673")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	myRopstenAccount := bind.NewKeyedTransactor(privateKey)
+	// Create projectDid
+	hexEncodedProjectDid := hex.EncodeToString([]byte("G8pj1V1Ccco7NpoGfkqY7K"))
+	var projectDid [32]byte
+	copy(projectDid[:], []byte("0x"+hexEncodedProjectDid))
 
 	callOpts := bind.CallOpts{
 		Pending: false,
-		From:    myRopstenAccount.From,
+		From:    ropstenAccount.From,
 		Context: context.Background(),
-	}
-
-	transOpts := bind.TransactOpts{
-		From:     myRopstenAccount.From,
-		Signer:   myRopstenAccount.Signer,
-		GasLimit: uint64(5000000),
 	}
 
 	url := "https://ropsten.infura.io/sq19XM5Eu2ANGAzwZ4yk"
@@ -42,18 +35,41 @@ func main() {
 	if err != nil {
 		log.Fatal("ERROR: %v", err)
 	}
-
 	fmt.Println("we have a connection")
 
-	// Test Ropsten balance
-	account := common.HexToAddress("0x647CD1829Ad0FF896640FCd3a29cF6Af0dE10A83")
-	balance, err := client.BalanceAt(context.Background(), account, nil)
+	getBalance(*client, ropstenAccount.From)
+	checkTokenCap(client, callOpts)
+
+	projectRegContract, projectError := deployProjectRegContract(client)
+
+	if projectError != nil {
+		log.Fatal("ERROR: %v", projectError)
+	}
+
+	createProjectWallet(client, ropstenAccount, projectDid, projectRegContract)
+	checkProjectWallet(projectRegContract, callOpts, projectDid)
+}
+
+func generateTransactorFromPvtKey(_privateKey string) *bind.TransactOpts {
+	// My Robsten Account
+	privateKey, err := crypto.HexToECDSA(_privateKey)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return bind.NewKeyedTransactor(privateKey)
+}
+
+// Test Ropsten balance
+func getBalance(client ethclient.Client, address common.Address) {
+	balance, err := client.BalanceAt(context.Background(), address, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Address balance", balance)
+}
 
-	// ERC20
+func checkTokenCap(client *ethclient.Client, callOpts bind.CallOpts) {
 	tokenAddress := common.HexToAddress("0x827a41c26784e0f51081e6d26687bff9c1c667e6")
 	ixoTokenContract, ixoError := token.NewIxoERC20Token(tokenAddress, client)
 
@@ -62,26 +78,23 @@ func main() {
 	}
 	cap, _ := ixoTokenContract.CAP(&callOpts)
 	fmt.Println("IXO Token Cap:", cap)
+}
 
-	// Project
-	hexEncodedProjectDid := hex.EncodeToString([]byte("G8pj1V1Bcco7NpoGfkqY7K"))
-	var projectDid [32]byte
-	copy(projectDid[:], []byte("0x"+hexEncodedProjectDid))
-
+func deployProjectRegContract(client *ethclient.Client) (*project.ProjectWalletRegistry, error) {
 	projectRegAddress := common.HexToAddress("0xfe45b990a1dd890adfac13b0a9c77758cc83a862")
-	projectRegContract, projectError := project.NewProjectWalletRegistry(projectRegAddress, client)
+	return project.NewProjectWalletRegistry(projectRegAddress, client)
+}
 
-	if projectError != nil {
-		log.Fatal(projectError)
-	}
-
-	fmt.Println("ProjectDid: ", string(projectDid[:]));
-
-	transaction, _ := projectRegContract.EnsureWallet(&transOpts, projectDid)
-
+func createProjectWallet(client *ethclient.Client, ropstenAccount *bind.TransactOpts, projectDid [32]byte, projectRegContract *project.ProjectWalletRegistry) {
+	fmt.Println("ProjectDid: ", string(projectDid[:]))
+	transaction, _ := projectRegContract.EnsureWallet(ropstenAccount, projectDid)
 	client.SendTransaction(context.Background(), transaction)
+}
 
-	walletAddress, _ := projectRegContract.WalletOf(&callOpts, projectDid)
-
-	fmt.Println("Wallet address: ", walletAddress.Hex());
+func checkProjectWallet(projectRegContract *project.ProjectWalletRegistry, callOpts bind.CallOpts, projectDid [32]byte) {
+	walletAddress, addressErr := projectRegContract.WalletOf(&callOpts, projectDid)
+	if addressErr != nil {
+		log.Fatal(addressErr)
+	}
+	fmt.Println("Wallet address: ", walletAddress.Hex())
 }
