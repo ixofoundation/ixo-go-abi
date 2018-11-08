@@ -1,31 +1,33 @@
 package test
 
 import (
-	"encoding/hex"
 	"math/big"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	auth "github.com/ixofoundation/ixo-go-abi/abi/auth"
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 )
 
 func TestProjectRegistryContract(t *testing.T) {
-	key, _ := crypto.GenerateKey()
+	// Use Ganache Account
+	key, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
 	authorizer := bind.NewKeyedTransactor(key)
-	blockchain := backends.NewSimulatedBackend(core.GenesisAlloc{authorizer.From: {Balance: big.NewInt(10000000000)}}, uint64(10000000))
+	//blockchain := backends.NewSimulatedBackend(core.GenesisAlloc{authorizer.From: {Balance: big.NewInt(10000000000)}}, uint64(10000000))
 
-	hexEncodedProjectDid := hex.EncodeToString([]byte("G8pj1V1Bcco7NpoGfkqY7K"))
-	t.Logf("ProjectDid: %v", hexEncodedProjectDid)
+	// Use Ganache 
+	blockchain, _ := ethclient.Dial("http://127.0.0.1:7545")
+
+	did := "WjU6gE1JhZANcdv3aC8PEJ"
 
 	var projectDid [32]byte
-	copy(projectDid[:], []byte("0x" + hexEncodedProjectDid))
-	t.Logf("ProjectDid: %v", string(projectDid[:]))
+	copy(projectDid[:], did)
+	t.Logf("ProjectDid Byte Array: %v", projectDid)
+	t.Logf("ProjectDid Byte Array: %v", string(projectDid[:]))
 
 	callOpts := bind.CallOpts{
 		Pending: true,
@@ -35,7 +37,6 @@ func TestProjectRegistryContract(t *testing.T) {
 	transOpts := bind.TransactOpts{
 		From:     authorizer.From,
 		Signer:   authorizer.Signer,
-		GasLimit: uint64(100000),
 	}
 
 	// Deploy token contract
@@ -62,7 +63,7 @@ func TestProjectRegistryContract(t *testing.T) {
 		blockchain,
 	)
 
-	blockchain.Commit()
+	//blockchain.
 
 	// Deploy project registry contract
 	_, _, projectRegistryContact, regDeployErr := project.DeployProjectWalletRegistry(
@@ -76,13 +77,13 @@ func TestProjectRegistryContract(t *testing.T) {
 		t.Errorf("ERROR: %v", regDeployErr)
 	}
 
-	blockchain.Commit()
+	//blockchain.Commit()
 
 	t.Run("Renounce ownership", renounceOwnership(*projectRegistryContact, transOpts))
-	blockchain.Commit()
+	//blockchain.Commit()
 	t.Run("Check ownership", checkOwnership(*projectRegistryContact, callOpts))
 	t.Run("Create project wallet", createProjectWallet(*projectRegistryContact, transOpts, projectDid))
-	blockchain.Commit()
+	//blockchain.Commit()
 	t.Run("Check if project wallet exist", checkProjectWallet(*projectRegistryContact, callOpts, projectDid))
 }
 
@@ -118,6 +119,8 @@ func checkOwnership(projectRegistryContact project.ProjectWalletRegistry, callOp
 func createProjectWallet(projectRegistryContact project.ProjectWalletRegistry, transOpts bind.TransactOpts, projectDid [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
 
+		t.Logf("Ensure Wallet: %v", string(projectDid[:]))
+
 		// create project wallet
 		transaction, walletErr := projectRegistryContact.EnsureWallet(&transOpts, projectDid)
 
@@ -130,6 +133,8 @@ func createProjectWallet(projectRegistryContact project.ProjectWalletRegistry, t
 
 func checkProjectWallet(projectRegistryContact project.ProjectWalletRegistry, callOpts bind.CallOpts, projectDid [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
+
+		t.Logf("WalletOf: %v", string(projectDid[:]))
 
 		projectWalletAddress, _ := projectRegistryContact.WalletOf(&callOpts, projectDid)
 
