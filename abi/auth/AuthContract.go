@@ -28,10 +28,10 @@ var (
 )
 
 // AuthContractABI is the input ABI used to generate the binding from.
-const AuthContractABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"memberCount\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"quorum\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"},{\"name\":\"\",\"type\":\"address\"}],\"name\":\"confirmedBy\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"members\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"isMember\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_quorum\",\"type\":\"uint256\"}],\"name\":\"setQuorum\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_tx\",\"type\":\"bytes32\"},{\"name\":\"_target\",\"type\":\"address\"},{\"name\":\"_sender\",\"type\":\"address\"},{\"name\":\"_receiver\",\"type\":\"address\"},{\"name\":\"_amt\",\"type\":\"uint256\"}],\"name\":\"validate\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"actions\",\"outputs\":[{\"name\":\"target\",\"type\":\"address\"},{\"name\":\"sender\",\"type\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\"},{\"name\":\"amt\",\"type\":\"uint256\"},{\"name\":\"confirmations\",\"type\":\"uint256\"},{\"name\":\"triggered\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_members\",\"type\":\"address[]\"},{\"name\":\"_quorum\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes32\"},{\"indexed\":false,\"name\":\"member\",\"type\":\"address\"}],\"name\":\"Confirmed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes32\"}],\"name\":\"Triggered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+const AuthContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_member\",\"type\":\"address\"}],\"name\":\"removeMember\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"memberCount\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"quorum\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes32\"},{\"name\":\"\",\"type\":\"address\"}],\"name\":\"confirmedBy\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"isMember\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_quorum\",\"type\":\"uint256\"}],\"name\":\"setQuorum\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_member\",\"type\":\"address\"}],\"name\":\"addMember\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_tx\",\"type\":\"bytes32\"},{\"name\":\"_target\",\"type\":\"address\"},{\"name\":\"_sender\",\"type\":\"address\"},{\"name\":\"_receiver\",\"type\":\"address\"},{\"name\":\"_amt\",\"type\":\"uint256\"}],\"name\":\"validate\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"actions\",\"outputs\":[{\"name\":\"target\",\"type\":\"address\"},{\"name\":\"sender\",\"type\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\"},{\"name\":\"amt\",\"type\":\"uint256\"},{\"name\":\"confirmations\",\"type\":\"uint256\"},{\"name\":\"triggered\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_members\",\"type\":\"address[]\"},{\"name\":\"_quorum\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes32\"},{\"indexed\":false,\"name\":\"member\",\"type\":\"address\"}],\"name\":\"Confirmed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"bytes32\"}],\"name\":\"Triggered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"member\",\"type\":\"address\"}],\"name\":\"MemberExists\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"member\",\"type\":\"address\"}],\"name\":\"MemeberDoesNotExist\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
 
 // AuthContractBin is the compiled bytecode used for deploying new contracts.
-const AuthContractBin = `0x608060405234801561001057600080fd5b50604051610c03380380610c0383398101604052805160208083015160008054600160a060020a0319163317815592909301805190939291610057916001918601906100c4565b5050600281905560005b6001548110156100bc5760016004600060018481548110151561008057fe5b600091825260208083209190910154600160a060020a031683528201929092526040019020805460ff1916911515919091179055600101610061565b505050610150565b828054828255906000526020600020908101928215610119579160200282015b828111156101195782518254600160a060020a031916600160a060020a039091161782556020909201916001909101906100e4565b50610125929150610129565b5090565b61014d91905b80821115610125578054600160a060020a031916815560010161012f565b90565b610aa48061015f6000396000f3006080604052600436106100ae5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166311aee38081146100b35780631703a018146100da5780634e831d7a146100ef5780635daf08ca14610127578063715018a61461015b5780638da5cb5b14610172578063a230c52414610187578063c1ba4e59146101a8578063d53764e0146101c0578063f2fde38b146101f3578063f3abde3214610214575b600080fd5b3480156100bf57600080fd5b506100c861026e565b60408051918252519081900360200190f35b3480156100e657600080fd5b506100c8610274565b3480156100fb57600080fd5b50610113600435600160a060020a036024351661027a565b604080519115158252519081900360200190f35b34801561013357600080fd5b5061013f60043561029a565b60408051600160a060020a039092168252519081900360200190f35b34801561016757600080fd5b506101706102c2565b005b34801561017e57600080fd5b5061013f610379565b34801561019357600080fd5b50610113600160a060020a0360043516610388565b3480156101b457600080fd5b5061017060043561039d565b3480156101cc57600080fd5b50610113600435600160a060020a0360243581169060443581169060643516608435610404565b3480156101ff57600080fd5b50610170600160a060020a0360043516610756565b34801561022057600080fd5b5061022c6004356107c4565b60408051600160a060020a039788168152958716602087015293909516848401526060840191909152608083015291151560a082015290519081900360c00190f35b60015490565b60025481565b600360209081526000928352604080842090915290825290205460ff1681565b60018054829081106102a857fe5b600091825260209091200154600160a060020a0316905081565b600054600160a060020a03163314610324576040805160e560020a62461bcd02815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b60008054604051600160a060020a03909116917ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482091a26000805473ffffffffffffffffffffffffffffffffffffffff19169055565b600054600160a060020a031681565b60046020526000908152604090205460ff1681565b600054600160a060020a031633146103ff576040805160e560020a62461bcd02815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b600255565b3360009081526004602052604081205460ff16151561046d576040805160e560020a62461bcd02815260206004820152600c60248201527f4e6f742061206d656d6265720000000000000000000000000000000000000000604482015290519081900360640190fd5b8515156104c4576040805160e560020a62461bcd02815260206004820152601660248201527f496e76616c6964207472616e73616374696f6e20696400000000000000000000604482015290519081900360640190fd5b600160a060020a0385161515610524576040805160e560020a62461bcd02815260206004820152600e60248201527f496e76616c696420746172676574000000000000000000000000000000000000604482015290519081900360640190fd5b600160a060020a0384161515610584576040805160e560020a62461bcd02815260206004820152600e60248201527f496e76616c69642073656e646572000000000000000000000000000000000000604482015290519081900360640190fd5b600160a060020a03831615156105e4576040805160e560020a62461bcd02815260206004820152601060248201527f496e76616c696420726563656976657200000000000000000000000000000000604482015290519081900360640190fd5b600082101561063d576040805160e560020a62461bcd02815260206004820152600e60248201527f496e76616c696420616d6f756e74000000000000000000000000000000000000604482015290519081900360640190fd5b6000868152600560208181526040928390208054600160a060020a03808b1673ffffffffffffffffffffffffffffffffffffffff19928316178355600180840180548c8416908516179055600284018054928b16929093169190911790915560038201879055928101805460ff1916905560040180549092019091558151888152339181019190915281517fd4964a7cd99f5c1fa8f2420fb5e1d3bd26eadf16e2658cf2e29a67dfda38601e929181900390910190a16002546000878152600560205260409020600401541061074a576107168661080b565b6040805187815290517f8dec26062ce2d31c0d76915d8ae104afcbd6bd4c80c98e58f2441fa66ab07b0c9181900360200190a15b50600195945050505050565b600054600160a060020a031633146107b8576040805160e560020a62461bcd02815260206004820152601160248201527f5065726d697373696f6e2064656e696564000000000000000000000000000000604482015290519081900360640190fd5b6107c1816109b0565b50565b6005602081905260009182526040909120805460018201546002830154600384015460048501549490950154600160a060020a039384169592841694919093169260ff1686565b3360009081526004602052604090205460ff161515610874576040805160e560020a62461bcd02815260206004820152600c60248201527f4e6f742061206d656d6265720000000000000000000000000000000000000000604482015290519081900360640190fd5b60008181526005602081905260409091200154819060ff16156108e1576040805160e560020a62461bcd02815260206004820152601d60248201527f5472616e73616374696f6e20616c726561647920747269676765726564000000604482015290519081900360640190fd5b6000828152600560208181526040808420928301805460ff19166001908117909155835490840154600285015460039095015483517fbeabacc8000000000000000000000000000000000000000000000000000000008152600160a060020a03928316600482015295821660248701526044860152915191169363beabacc8936064808201949392918390030190829087803b15801561098057600080fd5b505af1158015610994573d6000803e3d6000fd5b505050506040513d60208110156109aa57600080fd5b50505050565b600160a060020a0381161515610a10576040805160e560020a62461bcd02815260206004820152601560248201527f43616e2774207472616e7366657220746f203078300000000000000000000000604482015290519081900360640190fd5b60008054604051600160a060020a03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a36000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03929092169190911790555600a165627a7a72305820dfa428ee20e9748ba3392af3fca9ea6e984dcf7d9ceadf7210467bad217ffdb50029`
+const AuthContractBin = `0x608060405234801561001057600080fd5b50604051610fb7380380610fb7833981016040528051602082015160008054600160a060020a03191633178155919092018051600255600183905591905b60025481101561009157610089838281518110151561006957fe5b906020019060200201516001610099640100000000026401000000009004565b60010161004e565b5050506100c4565b600160a060020a03919091166000908152600460205260409020805460ff1916911515919091179055565b610ee4806100d36000396000f3006080604052600436106100b95763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630b1ca49a81146100be57806311aee380146100e15780631703a0181461010857806334a5b4aa1461011d578063715018a6146101555780638da5cb5b1461016a578063a230c5241461019b578063c1ba4e59146101bc578063ca6d56dc146101d4578063d53764e0146101f5578063f2fde38b14610228578063f3abde3214610249575b600080fd5b3480156100ca57600080fd5b506100df600160a060020a03600435166102a3565b005b3480156100ed57600080fd5b506100f661036e565b60408051918252519081900360200190f35b34801561011457600080fd5b506100f6610374565b34801561012957600080fd5b50610141600435600160a060020a036024351661037a565b604080519115158252519081900360200190f35b34801561016157600080fd5b506100df61039a565b34801561017657600080fd5b5061017f61043f565b60408051600160a060020a039092168252519081900360200190f35b3480156101a757600080fd5b50610141600160a060020a036004351661044e565b3480156101c857600080fd5b506100df600435610463565b3480156101e057600080fd5b506100df600160a060020a03600435166104b8565b34801561020157600080fd5b50610141600435600160a060020a0360243581169060443581169060643516608435610582565b34801561023457600080fd5b506100df600160a060020a0360043516610b40565b34801561025557600080fd5b50610261600435610b99565b60408051600160a060020a039788168152958716602087015293909516848401526060840191909152608083015291151560a082015290519081900360c00190f35b600054600160a060020a031633146102f3576040805160e560020a62461bcd0281526020600482015260116024820152600080516020610e79833981519152604482015290519081900360640190fd5b600160a060020a03811660009081526004602052604090205460ff161561032e5761031f816000610be0565b6002805460001901905561036b565b60408051600160a060020a038316815290517f3d54d720d1da9e28c5f47594ba8ec76a433c5506c3a9d8f15eabcc0b666213ce9181900360200190a15b50565b60025481565b60015481565b600360209081526000928352604080842090915290825290205460ff1681565b600054600160a060020a031633146103ea576040805160e560020a62461bcd0281526020600482015260116024820152600080516020610e79833981519152604482015290519081900360640190fd5b60008054604051600160a060020a03909116917ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482091a26000805473ffffffffffffffffffffffffffffffffffffffff19169055565b600054600160a060020a031681565b60046020526000908152604090205460ff1681565b600054600160a060020a031633146104b3576040805160e560020a62461bcd0281526020600482015260116024820152600080516020610e79833981519152604482015290519081900360640190fd5b600155565b600054600160a060020a03163314610508576040805160e560020a62461bcd0281526020600482015260116024820152600080516020610e79833981519152604482015290519081900360640190fd5b600160a060020a03811660009081526004602052604090205460ff16151561054357610535816001610be0565b60028054600101905561036b565b60408051600160a060020a038316815290517fe32546988a3d9befaaf84263498bc5d71e645919506964c4d10886e6922deef29181900360200190a150565b3360009081526004602052604081205460ff1615156105eb576040805160e560020a62461bcd02815260206004820152600c60248201527f4e6f742061206d656d6265720000000000000000000000000000000000000000604482015290519081900360640190fd5b851515610630576040805160e560020a62461bcd0281526020600482015260166024820152600080516020610e99833981519152604482015290519081900360640190fd5b6000868152600560208190526040909120015460ff1615156001141561065857506001610b37565b600160a060020a03851615156106b8576040805160e560020a62461bcd02815260206004820152600e60248201527f496e76616c696420746172676574000000000000000000000000000000000000604482015290519081900360640190fd5b600160a060020a0384161515610718576040805160e560020a62461bcd02815260206004820152600e60248201527f496e76616c69642073656e646572000000000000000000000000000000000000604482015290519081900360640190fd5b600160a060020a0383161515610778576040805160e560020a62461bcd02815260206004820152601060248201527f496e76616c696420726563656976657200000000000000000000000000000000604482015290519081900360640190fd5b60008210156107d1576040805160e560020a62461bcd02815260206004820152600e60248201527f496e76616c696420616d6f756e74000000000000000000000000000000000000604482015290519081900360640190fd5b600086815260036020908152604080832033845290915290205460ff1615610869576040805160e560020a62461bcd02815260206004820152602560248201527f43616e6e6f7420636f6e6669726d2073616d65207472616e73616374696f6e2060448201527f7477696365000000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60008681526005602052604090206004015415156108ef5760008681526005602081905260409091208054600160a060020a0380891673ffffffffffffffffffffffffffffffffffffffff19928316178355600183018054898316908416179055600283018054918816919092161790556003810184905501805460ff19169055610a68565b600086815260056020526040902054600160a060020a0386811691161461094e576040805160e560020a62461bcd0281526020600482015260166024820152600080516020610e99833981519152604482015290519081900360640190fd5b600086815260056020526040902060010154600160a060020a038581169116146109b0576040805160e560020a62461bcd0281526020600482015260166024820152600080516020610e99833981519152604482015290519081900360640190fd5b600086815260056020526040902060020154600160a060020a03848116911614610a12576040805160e560020a62461bcd0281526020600482015260166024820152600080516020610e99833981519152604482015290519081900360640190fd5b6000868152600560205260409020600301548214610a68576040805160e560020a62461bcd0281526020600482015260166024820152600080516020610e99833981519152604482015290519081900360640190fd5b600086815260056020908152604080832060040180546001908101909155600383528184203380865290845293829020805460ff1916909117905580518981529182019290925281517fd4964a7cd99f5c1fa8f2420fb5e1d3bd26eadf16e2658cf2e29a67dfda38601e929181900390910190a160015460008781526005602052604090206004015410610b3357610aff86610c0b565b6040805187815290517f8dec26062ce2d31c0d76915d8ae104afcbd6bd4c80c98e58f2441fa66ab07b0c9181900360200190a15b5060015b95945050505050565b600054600160a060020a03163314610b90576040805160e560020a62461bcd0281526020600482015260116024820152600080516020610e79833981519152604482015290519081900360640190fd5b61036b81610db0565b6005602081905260009182526040909120805460018201546002830154600384015460048501549490950154600160a060020a039384169592841694919093169260ff1686565b600160a060020a03919091166000908152600460205260409020805460ff1916911515919091179055565b3360009081526004602052604090205460ff161515610c74576040805160e560020a62461bcd02815260206004820152600c60248201527f4e6f742061206d656d6265720000000000000000000000000000000000000000604482015290519081900360640190fd5b60008181526005602081905260409091200154819060ff1615610ce1576040805160e560020a62461bcd02815260206004820152601d60248201527f5472616e73616374696f6e20616c726561647920747269676765726564000000604482015290519081900360640190fd5b6000828152600560208181526040808420928301805460ff19166001908117909155835490840154600285015460039095015483517fbeabacc8000000000000000000000000000000000000000000000000000000008152600160a060020a03928316600482015295821660248701526044860152915191169363beabacc8936064808201949392918390030190829087803b158015610d8057600080fd5b505af1158015610d94573d6000803e3d6000fd5b505050506040513d6020811015610daa57600080fd5b50505050565b600160a060020a0381161515610e10576040805160e560020a62461bcd02815260206004820152601560248201527f43616e2774207472616e7366657220746f203078300000000000000000000000604482015290519081900360640190fd5b60008054604051600160a060020a03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a36000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039290921691909117905556005065726d697373696f6e2064656e696564000000000000000000000000000000496e76616c6964207472616e73616374696f6e20696400000000000000000000a165627a7a72305820ef530f1f591f99d5ecc5f15dea1e02c255025c7eedb6b1de0271ae94b96473980029`
 
 // DeployAuthContract deploys a new Ethereum contract, binding an instance of AuthContract to it.
 func DeployAuthContract(auth *bind.TransactOpts, backend bind.ContractBackend, _members []common.Address, _quorum *big.Int) (common.Address, *types.Transaction, *AuthContract, error) {
@@ -240,10 +240,10 @@ func (_AuthContract *AuthContractCallerSession) Actions(arg0 [32]byte) (struct {
 	return _AuthContract.Contract.Actions(&_AuthContract.CallOpts, arg0)
 }
 
-// ConfirmedBy is a free data retrieval call binding the contract method 0x4e831d7a.
+// ConfirmedBy is a free data retrieval call binding the contract method 0x34a5b4aa.
 //
-// Solidity: function confirmedBy( uint256,  address) constant returns(bool)
-func (_AuthContract *AuthContractCaller) ConfirmedBy(opts *bind.CallOpts, arg0 *big.Int, arg1 common.Address) (bool, error) {
+// Solidity: function confirmedBy( bytes32,  address) constant returns(bool)
+func (_AuthContract *AuthContractCaller) ConfirmedBy(opts *bind.CallOpts, arg0 [32]byte, arg1 common.Address) (bool, error) {
 	var (
 		ret0 = new(bool)
 	)
@@ -252,17 +252,17 @@ func (_AuthContract *AuthContractCaller) ConfirmedBy(opts *bind.CallOpts, arg0 *
 	return *ret0, err
 }
 
-// ConfirmedBy is a free data retrieval call binding the contract method 0x4e831d7a.
+// ConfirmedBy is a free data retrieval call binding the contract method 0x34a5b4aa.
 //
-// Solidity: function confirmedBy( uint256,  address) constant returns(bool)
-func (_AuthContract *AuthContractSession) ConfirmedBy(arg0 *big.Int, arg1 common.Address) (bool, error) {
+// Solidity: function confirmedBy( bytes32,  address) constant returns(bool)
+func (_AuthContract *AuthContractSession) ConfirmedBy(arg0 [32]byte, arg1 common.Address) (bool, error) {
 	return _AuthContract.Contract.ConfirmedBy(&_AuthContract.CallOpts, arg0, arg1)
 }
 
-// ConfirmedBy is a free data retrieval call binding the contract method 0x4e831d7a.
+// ConfirmedBy is a free data retrieval call binding the contract method 0x34a5b4aa.
 //
-// Solidity: function confirmedBy( uint256,  address) constant returns(bool)
-func (_AuthContract *AuthContractCallerSession) ConfirmedBy(arg0 *big.Int, arg1 common.Address) (bool, error) {
+// Solidity: function confirmedBy( bytes32,  address) constant returns(bool)
+func (_AuthContract *AuthContractCallerSession) ConfirmedBy(arg0 [32]byte, arg1 common.Address) (bool, error) {
 	return _AuthContract.Contract.ConfirmedBy(&_AuthContract.CallOpts, arg0, arg1)
 }
 
@@ -318,32 +318,6 @@ func (_AuthContract *AuthContractCallerSession) MemberCount() (*big.Int, error) 
 	return _AuthContract.Contract.MemberCount(&_AuthContract.CallOpts)
 }
 
-// Members is a free data retrieval call binding the contract method 0x5daf08ca.
-//
-// Solidity: function members( uint256) constant returns(address)
-func (_AuthContract *AuthContractCaller) Members(opts *bind.CallOpts, arg0 *big.Int) (common.Address, error) {
-	var (
-		ret0 = new(common.Address)
-	)
-	out := ret0
-	err := _AuthContract.contract.Call(opts, out, "members", arg0)
-	return *ret0, err
-}
-
-// Members is a free data retrieval call binding the contract method 0x5daf08ca.
-//
-// Solidity: function members( uint256) constant returns(address)
-func (_AuthContract *AuthContractSession) Members(arg0 *big.Int) (common.Address, error) {
-	return _AuthContract.Contract.Members(&_AuthContract.CallOpts, arg0)
-}
-
-// Members is a free data retrieval call binding the contract method 0x5daf08ca.
-//
-// Solidity: function members( uint256) constant returns(address)
-func (_AuthContract *AuthContractCallerSession) Members(arg0 *big.Int) (common.Address, error) {
-	return _AuthContract.Contract.Members(&_AuthContract.CallOpts, arg0)
-}
-
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() constant returns(address)
@@ -394,6 +368,48 @@ func (_AuthContract *AuthContractSession) Quorum() (*big.Int, error) {
 // Solidity: function quorum() constant returns(uint256)
 func (_AuthContract *AuthContractCallerSession) Quorum() (*big.Int, error) {
 	return _AuthContract.Contract.Quorum(&_AuthContract.CallOpts)
+}
+
+// AddMember is a paid mutator transaction binding the contract method 0xca6d56dc.
+//
+// Solidity: function addMember(_member address) returns()
+func (_AuthContract *AuthContractTransactor) AddMember(opts *bind.TransactOpts, _member common.Address) (*types.Transaction, error) {
+	return _AuthContract.contract.Transact(opts, "addMember", _member)
+}
+
+// AddMember is a paid mutator transaction binding the contract method 0xca6d56dc.
+//
+// Solidity: function addMember(_member address) returns()
+func (_AuthContract *AuthContractSession) AddMember(_member common.Address) (*types.Transaction, error) {
+	return _AuthContract.Contract.AddMember(&_AuthContract.TransactOpts, _member)
+}
+
+// AddMember is a paid mutator transaction binding the contract method 0xca6d56dc.
+//
+// Solidity: function addMember(_member address) returns()
+func (_AuthContract *AuthContractTransactorSession) AddMember(_member common.Address) (*types.Transaction, error) {
+	return _AuthContract.Contract.AddMember(&_AuthContract.TransactOpts, _member)
+}
+
+// RemoveMember is a paid mutator transaction binding the contract method 0x0b1ca49a.
+//
+// Solidity: function removeMember(_member address) returns()
+func (_AuthContract *AuthContractTransactor) RemoveMember(opts *bind.TransactOpts, _member common.Address) (*types.Transaction, error) {
+	return _AuthContract.contract.Transact(opts, "removeMember", _member)
+}
+
+// RemoveMember is a paid mutator transaction binding the contract method 0x0b1ca49a.
+//
+// Solidity: function removeMember(_member address) returns()
+func (_AuthContract *AuthContractSession) RemoveMember(_member common.Address) (*types.Transaction, error) {
+	return _AuthContract.Contract.RemoveMember(&_AuthContract.TransactOpts, _member)
+}
+
+// RemoveMember is a paid mutator transaction binding the contract method 0x0b1ca49a.
+//
+// Solidity: function removeMember(_member address) returns()
+func (_AuthContract *AuthContractTransactorSession) RemoveMember(_member common.Address) (*types.Transaction, error) {
+	return _AuthContract.Contract.RemoveMember(&_AuthContract.TransactOpts, _member)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
@@ -583,6 +599,250 @@ func (_AuthContract *AuthContractFilterer) WatchConfirmed(opts *bind.WatchOpts, 
 				// New log arrived, parse the event and forward to the user
 				event := new(AuthContractConfirmed)
 				if err := _AuthContract.contract.UnpackLog(event, "Confirmed", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// AuthContractMemberExistsIterator is returned from FilterMemberExists and is used to iterate over the raw logs and unpacked data for MemberExists events raised by the AuthContract contract.
+type AuthContractMemberExistsIterator struct {
+	Event *AuthContractMemberExists // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *AuthContractMemberExistsIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(AuthContractMemberExists)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(AuthContractMemberExists)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *AuthContractMemberExistsIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *AuthContractMemberExistsIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// AuthContractMemberExists represents a MemberExists event raised by the AuthContract contract.
+type AuthContractMemberExists struct {
+	Member common.Address
+	Raw    types.Log // Blockchain specific contextual infos
+}
+
+// FilterMemberExists is a free log retrieval operation binding the contract event 0xe32546988a3d9befaaf84263498bc5d71e645919506964c4d10886e6922deef2.
+//
+// Solidity: e MemberExists(member address)
+func (_AuthContract *AuthContractFilterer) FilterMemberExists(opts *bind.FilterOpts) (*AuthContractMemberExistsIterator, error) {
+
+	logs, sub, err := _AuthContract.contract.FilterLogs(opts, "MemberExists")
+	if err != nil {
+		return nil, err
+	}
+	return &AuthContractMemberExistsIterator{contract: _AuthContract.contract, event: "MemberExists", logs: logs, sub: sub}, nil
+}
+
+// WatchMemberExists is a free log subscription operation binding the contract event 0xe32546988a3d9befaaf84263498bc5d71e645919506964c4d10886e6922deef2.
+//
+// Solidity: e MemberExists(member address)
+func (_AuthContract *AuthContractFilterer) WatchMemberExists(opts *bind.WatchOpts, sink chan<- *AuthContractMemberExists) (event.Subscription, error) {
+
+	logs, sub, err := _AuthContract.contract.WatchLogs(opts, "MemberExists")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(AuthContractMemberExists)
+				if err := _AuthContract.contract.UnpackLog(event, "MemberExists", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// AuthContractMemeberDoesNotExistIterator is returned from FilterMemeberDoesNotExist and is used to iterate over the raw logs and unpacked data for MemeberDoesNotExist events raised by the AuthContract contract.
+type AuthContractMemeberDoesNotExistIterator struct {
+	Event *AuthContractMemeberDoesNotExist // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *AuthContractMemeberDoesNotExistIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(AuthContractMemeberDoesNotExist)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(AuthContractMemeberDoesNotExist)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *AuthContractMemeberDoesNotExistIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *AuthContractMemeberDoesNotExistIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// AuthContractMemeberDoesNotExist represents a MemeberDoesNotExist event raised by the AuthContract contract.
+type AuthContractMemeberDoesNotExist struct {
+	Member common.Address
+	Raw    types.Log // Blockchain specific contextual infos
+}
+
+// FilterMemeberDoesNotExist is a free log retrieval operation binding the contract event 0x3d54d720d1da9e28c5f47594ba8ec76a433c5506c3a9d8f15eabcc0b666213ce.
+//
+// Solidity: e MemeberDoesNotExist(member address)
+func (_AuthContract *AuthContractFilterer) FilterMemeberDoesNotExist(opts *bind.FilterOpts) (*AuthContractMemeberDoesNotExistIterator, error) {
+
+	logs, sub, err := _AuthContract.contract.FilterLogs(opts, "MemeberDoesNotExist")
+	if err != nil {
+		return nil, err
+	}
+	return &AuthContractMemeberDoesNotExistIterator{contract: _AuthContract.contract, event: "MemeberDoesNotExist", logs: logs, sub: sub}, nil
+}
+
+// WatchMemeberDoesNotExist is a free log subscription operation binding the contract event 0x3d54d720d1da9e28c5f47594ba8ec76a433c5506c3a9d8f15eabcc0b666213ce.
+//
+// Solidity: e MemeberDoesNotExist(member address)
+func (_AuthContract *AuthContractFilterer) WatchMemeberDoesNotExist(opts *bind.WatchOpts, sink chan<- *AuthContractMemeberDoesNotExist) (event.Subscription, error) {
+
+	logs, sub, err := _AuthContract.contract.WatchLogs(opts, "MemeberDoesNotExist")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(AuthContractMemeberDoesNotExist)
+				if err := _AuthContract.contract.UnpackLog(event, "MemeberDoesNotExist", log); err != nil {
 					return err
 				}
 				event.Raw = log
