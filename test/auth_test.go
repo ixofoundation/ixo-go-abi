@@ -59,14 +59,14 @@ func TestAuthContract(t *testing.T) {
 	t.Logf("AUTH_ADDRESS: %v", authContractAddress.Hex())
 
 	// #3 PROJECT_WALLET_ATH
-	projectWalletAuthAddress, _, projectAuthContract, _ := auth.DeployProjectWalletAuthoriser(
+	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(
 		owner,
 		blockchain,
 	)
 	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
 
 	// #4 SET_AUTH
-	projectAuthContract.SetAuthoriser(owner, authContractAddress)
+	projectWalletAuthContract.SetAuthoriser(owner, authContractAddress)
 
 	// #5 PROJECT_WALLET_FACTORY
 	projectWalletFactoryAddress, _, _, _ := project.DeployProjectWalletFactory(owner, blockchain)
