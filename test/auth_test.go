@@ -15,10 +15,16 @@ import (
 )
 
 func TestAuthContract(t *testing.T) {
-	// Owner/ValidatorNode address
+	// Owner Address
 	keyAuth, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
 	owner := bind.NewKeyedTransactor(keyAuth)
-	owner.GasLimit = uint64(1000000000000)
+	owner.GasLimit = uint64(2000000)
+	owner.GasPrice = big.NewInt(2000000)
+
+	// ValidatorNode Address
+	keyVal, _ := crypto.HexToECDSA("b91ff5ab275b21e12482bca1481fa9726c27c9debda25c4c3c8cd192468d730e")
+	validatorNode := bind.NewKeyedTransactor(keyVal)
+	validatorNode.GasLimit = uint64(4500000)
 
 	// Evaluator Address
 	keyEval, _ := crypto.HexToECDSA("baf7af00a5f868db6ef8ca22ebbf69c131217ef08427c040d90931a803d98957")
@@ -42,7 +48,7 @@ func TestAuthContract(t *testing.T) {
 
 	// #2 AUTH
 	var members []common.Address
-	members = append(members, owner.From)
+	members = append(members, validatorNode.From)
 
 	authContractAddress, _, authContract, _ := auth.DeployAuthContract(
 		owner,
@@ -93,7 +99,7 @@ func TestAuthContract(t *testing.T) {
 	t.Run("Check if address is part of members list", checkIsMember(*authContract, callOpts, owner.From))
 	t.Run("Check quorum size", checkQuorumSize(*authContract, callOpts))
 	t.Run("Check member size", checkMemberCount(*authContract, callOpts))
-	t.Run("Validate transaction", validateTransaction(*authContract, *owner, txID, projectWalletAuthAddress, projectWalletAddress, evalWallet.From))
+	t.Run("Validate transaction", validateTransaction(*authContract, *validatorNode, txID, projectWalletAuthAddress, projectWalletAddress, evalWallet.From))
 }
 
 func randomInt(min, max int) int {
@@ -144,6 +150,7 @@ func validateTransaction(authContract auth.AuthContract, transOpts bind.Transact
 		// targetAddr = ProjectWalletAuthAddress
 		// senderAddr = ProjectWalletAddress
 		// receiverAddr = Person receiving funds
+		t.Logf("validatorNode: %v", transOpts.From.Hex())
 		t.Logf("transaction: %v", common.ToHex(txn))
 		t.Logf("senderAddr: %v", projectWalletAddress.Hex())
 		t.Logf("receiverAddr: %v", evalAddress.Hex())
