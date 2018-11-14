@@ -5,34 +5,34 @@ import (
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 )
 
 func TestIxoErc20TokenContract(t *testing.T) {
-	key, _ := crypto.GenerateKey()
-	auth := bind.NewKeyedTransactor(key)
-	blockchain := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000)}}, uint64(10000000))
+	// Use Ganache Account
+	key, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
+	authorizer := bind.NewKeyedTransactor(key)
+
+	// Use Ganache
+	blockchain, _ := ethclient.Dial("http://127.0.0.1:7545")
 
 	_, _, ixoTokenContact, _ := token.DeployIxoERC20Token(
-		auth,
+		authorizer,
 		blockchain,
 	)
 
-	blockchain.Commit()
-
 	callOpts := bind.CallOpts{
 		Pending: false,
-		From:    auth.From,
+		From:    authorizer.From,
 		Context: nil,
 	}
 
 	transOpts := bind.TransactOpts{
-		From:   auth.From,
-		Signer: auth.Signer,
+		From:   authorizer.From,
+		Signer: authorizer.Signer,
 	}
 
 	// Test Token Name
@@ -45,15 +45,13 @@ func TestIxoErc20TokenContract(t *testing.T) {
 	t.Run("Check token cap is correct", checkTokenCap(*ixoTokenContact, callOpts))
 
 	// Test Set Minter
-	ixoTokenContact.SetMinter(&transOpts, auth.From)
-	blockchain.Commit()
-	t.Run("Check setting minter address", checkMinterAddress(*ixoTokenContact, callOpts, auth.From))
+	ixoTokenContact.SetMinter(&transOpts, authorizer.From)
+	t.Run("Check setting minter address", checkMinterAddress(*ixoTokenContact, callOpts, authorizer.From))
 
 	// Test Mint Token to address
 	amountToMint := big.NewInt(22000)
-	ixoTokenContact.Mint(&transOpts, auth.From, amountToMint)
-	blockchain.Commit()
-	t.Run("Check minting amount to address", mintTokenToAddress(*ixoTokenContact, callOpts, auth.From, *amountToMint))
+	ixoTokenContact.Mint(&transOpts, authorizer.From, amountToMint)
+	t.Run("Check minting amount to address", mintTokenToAddress(*ixoTokenContact, callOpts, authorizer.From, *amountToMint))
 }
 
 func checkTokenName(ixoTokenContact token.IxoERC20Token, callOpts bind.CallOpts) func(*testing.T) {

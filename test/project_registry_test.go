@@ -17,7 +17,6 @@ func TestProjectRegistryContract(t *testing.T) {
 	// Use Ganache Account
 	key, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
 	authorizer := bind.NewKeyedTransactor(key)
-	//blockchain := backends.NewSimulatedBackend(core.GenesisAlloc{authorizer.From: {Balance: big.NewInt(10000000000)}}, uint64(10000000))
 
 	// Use Ganache 
 	blockchain, _ := ethclient.Dial("http://127.0.0.1:7545")
@@ -63,8 +62,6 @@ func TestProjectRegistryContract(t *testing.T) {
 		blockchain,
 	)
 
-	//blockchain.
-
 	// Deploy project registry contract
 	_, _, projectRegistryContact, regDeployErr := project.DeployProjectWalletRegistry(
 		authorizer,
@@ -77,13 +74,9 @@ func TestProjectRegistryContract(t *testing.T) {
 		t.Errorf("ERROR: %v", regDeployErr)
 	}
 
-	//blockchain.Commit()
-
 	t.Run("Renounce ownership", renounceOwnership(*projectRegistryContact, transOpts))
-	//blockchain.Commit()
 	t.Run("Check ownership", checkOwnership(*projectRegistryContact, callOpts))
 	t.Run("Create project wallet", createProjectWallet(*projectRegistryContact, transOpts, projectDid))
-	//blockchain.Commit()
 	t.Run("Check if project wallet exist", checkProjectWallet(*projectRegistryContact, callOpts, projectDid))
 }
 

@@ -2,74 +2,110 @@ package test
 
 import (
 	"math/big"
+	"math/rand"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	auth "github.com/ixofoundation/ixo-go-abi/abi/auth"
+	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 )
 
 func TestAuthContract(t *testing.T) {
-	key, _ := crypto.GenerateKey()
-	authorizer := bind.NewKeyedTransactor(key)
-	projectWallet := bind.NewKeyedTransactor(key)
-	blockchain := backends.NewSimulatedBackend(core.GenesisAlloc{authorizer.From: {Balance: big.NewInt(10000000000)}}, uint64(10000000))
+	// Owner/ValidatorNode address
+	keyAuth, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
+	owner := bind.NewKeyedTransactor(keyAuth)
+	owner.GasLimit = uint64(1000000000000)
+
+	// Evaluator Address
+	keyEval, _ := crypto.HexToECDSA("baf7af00a5f868db6ef8ca22ebbf69c131217ef08427c040d90931a803d98957")
+	evalWallet := bind.NewKeyedTransactor(keyEval)
+
+	// Use Ganache
+	blockchain, _ := ethclient.Dial("http://127.0.0.1:7545")
 
 	callOpts := bind.CallOpts{
 		Pending: false,
-		From:    authorizer.From,
+		From:    owner.From,
 		Context: nil,
 	}
 
-	transOpts := bind.TransactOpts{
-		From:   authorizer.From,
-		Signer: authorizer.Signer,
-		GasLimit: uint64(100000),
-	}
-
-	// Setup quorum
-	var quorum []common.Address
-	quorum = append(quorum, authorizer.From)
-
-	// Deploy auth contract
-	_, _, authContract, _ := auth.DeployAuthContract(
-		authorizer,
+	// #1 ERC20
+	ixoTokenAddress, _, ixoTokenContact, _ := token.DeployIxoERC20Token(
+		owner,
 		blockchain,
-		quorum,
+	)
+	t.Logf("ERC20_ADDRESS: %v", ixoTokenAddress.Hex())
+
+	// #2 AUTH
+	var members []common.Address
+	members = append(members, owner.From)
+
+	authContractAddress, _, authContract, _ := auth.DeployAuthContract(
+		owner,
+		blockchain,
+		members,
 		big.NewInt(1),
 	)
+	t.Logf("AUTH_ADDRESS: %v", authContractAddress.Hex())
 
-	_, _, ixoTokenContact, _ := token.DeployIxoERC20Token(
-		authorizer,
+	// #3 PROJECT_WALLET_ATH
+	projectWalletAuthAddress, _, projectAuthContract, _ := auth.DeployProjectWalletAuthoriser(
+		owner,
 		blockchain,
 	)
+	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
 
-	projectWalletAuthAddress, _, _, _ := auth.DeployProjectWalletAuthoriser(
-		authorizer,
-		blockchain,
-	)
+	// #4 SET_AUTH
+	projectAuthContract.SetAuthoriser(owner, authContractAddress)
 
-	blockchain.Commit()
+	// #5 PROJECT_WALLET_FACTORY
+	projectWalletFactoryAddress, _, _, _ := project.DeployProjectWalletFactory(owner, blockchain)
+	t.Logf("PROJECT_WALLET_FACTORY_ADDRESS: %v", projectWalletFactoryAddress.Hex())
 
-	// Simulate token mint and transfer
+	// #6 PROJECT_WALLET_REGISTRY
+	projectWalletRegistryAddress, _, projectWalletRegistryContract, _ := project.DeployProjectWalletRegistry(owner, blockchain, ixoTokenAddress, authContractAddress, projectWalletFactoryAddress)
+	t.Logf("PROJECT_WALLET_REGISTRY_ADDRESS: %v", projectWalletRegistryAddress.Hex())
 
-	ixoTokenContact.Mint(&transOpts, authorizer.From, big.NewInt(50000))
-	blockchain.Commit()
+	// #7 CREATE_PROJECT_DID
+	var projectDid [32]byte
+	copy(projectDid[:], "WjU6gE1JhZANcdv3aC8PEJ")
 
-	transaction, err := ixoTokenContact.TransferFrom(&transOpts, projectWallet.From, authorizer.From, big.NewInt(50000))
+	// #8 CREATE_PROJECT_WALLET
+	projectWalletRegistryContract.EnsureWallet(owner, projectDid)
+	projectWalletAddress, _ := projectWalletRegistryContract.WalletOf(&callOpts, projectDid)
+	t.Logf("PROJECT_WALLET_ADDRESS: %v", projectWalletAddress.Hex())
 
-	if err != nil {
-		t.Errorf("ERROR: %v", err)
-	}
+	// #9 SET_TOKEN_MINTER
+	ixoTokenContact.SetMinter(owner, owner.From)
 
-	t.Run("Check if address is part of members list", checkIsMember(*authContract, callOpts, authorizer.From))
+	// #10 FUND_PROJECT_WALLET
+	ixoTokenContact.Mint(owner, projectWalletAddress, big.NewInt(500000000))
+
+	// #11 CREATE_RANDOM_TX_ID
+	var txID [32]byte
+	copy(txID[:], randomString(32)[:32])
+
+	// #12 RUN_UNIT_TESTS
+	t.Run("Check if address is part of members list", checkIsMember(*authContract, callOpts, owner.From))
 	t.Run("Check quorum size", checkQuorumSize(*authContract, callOpts))
 	t.Run("Check member size", checkMemberCount(*authContract, callOpts))
-	t.Run("Validate transaction", validateTransaction(*authContract, transOpts, transaction.Hash(), projectWallet.From, authorizer.From, projectWalletAuthAddress))
+	t.Run("Validate transaction", validateTransaction(*authContract, *owner, txID, projectWalletAuthAddress, projectWalletAddress, evalWallet.From))
+}
+
+func randomInt(min, max int) int {
+	return min + rand.Intn(max-min)
+}
+
+func randomString(len int) []byte {
+	bytes := make([]byte, len)
+	for i := 0; i < len; i++ {
+		bytes[i] = byte(randomInt(65, 90))
+	}
+	return bytes
 }
 
 func checkIsMember(authContract auth.AuthContract, callOpts bind.CallOpts, address common.Address) func(*testing.T) {
@@ -100,18 +136,25 @@ func checkMemberCount(authContract auth.AuthContract, callOpts bind.CallOpts) fu
 	}
 }
 
-func validateTransaction(authContract auth.AuthContract, transOpts bind.TransactOpts, transaction [32]byte, senderAddr common.Address, receiverAddr common.Address, targetAddr common.Address) func(*testing.T) {
+func validateTransaction(authContract auth.AuthContract, transOpts bind.TransactOpts, transaction [32]byte, projectWalletAuthAddress common.Address, projectWalletAddress common.Address, evalAddress common.Address) func(*testing.T) {
 	return func(t *testing.T) {
 
+		var txn []byte = transaction[:]
 		// transaction = Transaction hash
 		// targetAddr = ProjectWalletAuthAddress
 		// senderAddr = ProjectWalletAddress
 		// receiverAddr = Person receiving funds
-		transaction, err := authContract.Validate(&transOpts, transaction, targetAddr, senderAddr, receiverAddr, big.NewInt(20))
+		t.Logf("transaction: %v", common.ToHex(txn))
+		t.Logf("senderAddr: %v", projectWalletAddress.Hex())
+		t.Logf("receiverAddr: %v", evalAddress.Hex())
+		t.Logf("authAddr: %v", projectWalletAuthAddress.Hex())
+
+		transaction, err := authContract.Validate(&transOpts, transaction, projectWalletAuthAddress, projectWalletAddress, evalAddress, big.NewInt(200000000))
+
 		if err != nil {
 			t.Errorf("ERROR: %v", err)
 		}
 
-		t.Logf("Transaction Hash: %v", transaction.Hash())
+		t.Logf("Transaction Hash: %v", transaction)
 	}
 }
