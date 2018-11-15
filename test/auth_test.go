@@ -1,5 +1,6 @@
 package test
 
+/*
 import (
 	"math/big"
 	"math/rand"
@@ -13,8 +14,7 @@ import (
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 )
-
-func TestAuthContract(t *testing.T) {
+ func TestAuthContract(t *testing.T) {
 	// Owner Address
 	keyAuth, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
 	owner := bind.NewKeyedTransactor(keyAuth)
@@ -165,3 +165,4 @@ func validateTransaction(authContract auth.AuthContract, transOpts bind.Transact
 		t.Logf("Transaction Hash: %v", transaction)
 	}
 }
+ */
