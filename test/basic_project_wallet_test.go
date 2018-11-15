@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
+	util "github.com/ixofoundation/ixo-go-abi/test/util"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -48,14 +49,14 @@ func TestBasicProjectWalletContract(t *testing.T) {
 		blockchain,
 		ixoTokenAddress,
 		ownerWallet.From,
-		random32Bytes(),
+		Random32Bytes(),
 	)
 	t.Logf("BASIC_PROJECT_WALLET_ADDRESS: %v", basicProjectWalletAddress.Hex())
 
 	// MINT_TOKENS_TO_PROJECT_WALLET
 	ixoTokenContact.Mint(ownerWallet, basicProjectWalletAddress, big.NewInt(800000000))
 
-	t.Run("Check balance on basic project wallet", checkBalanceOnBasicProjectWallet(*ixoTokenContact, callOpts, basicProjectWalletAddress, *big.NewInt(800000000)))
+	t.Run("Check balance on basic project wallet", util.CheckBalance(*ixoTokenContact, callOpts, basicProjectWalletAddress, *big.NewInt(800000000)))
 	t.Run("Transfer tokens from basic project wallet to evaluatorWallet", transferTokensFromBasicProjectWallet(*basicProjectWalletContract, *ixoTokenContact, callOpts, *ownerWallet, evaluatorWallet.From, *big.NewInt(400000000)))
 }
 
@@ -63,7 +64,7 @@ func randomInt(min, max int) int {
 	return min + rand.Intn(max-min)
 }
 
-func random32Bytes() [32]byte {
+func Random32Bytes() [32]byte {
 	bytes := make([]byte, 32)
 	for i := 0; i < 32; i++ {
 		bytes[i] = byte(randomInt(65, 90))
@@ -73,7 +74,7 @@ func random32Bytes() [32]byte {
 	return txID
 }
 
-func checkBalanceOnBasicProjectWallet(tokenContract token.IxoERC20Token, callOpts bind.CallOpts, basicProjectWalletAddress common.Address, expectedBalance big.Int) func(*testing.T) {
+func CheckBalanceOnBasicProjectWallet(tokenContract token.IxoERC20Token, callOpts bind.CallOpts, basicProjectWalletAddress common.Address, expectedBalance big.Int) func(*testing.T) {
 	return func(t *testing.T) {
 		balance, _ := tokenContract.BalanceOf(&callOpts, basicProjectWalletAddress)
 		assert.EqualValues(t, &expectedBalance, balance, "Incorrect balance!")
