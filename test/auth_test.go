@@ -16,6 +16,7 @@ import (
 )
 
 func TestAuthContract(t *testing.T) {
+
 	// Contract Owner Address
 	keyAuth, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
 	ownerWallet := bind.NewKeyedTransactor(keyAuth)
@@ -28,7 +29,7 @@ func TestAuthContract(t *testing.T) {
 	// Validator Address
 	keyValidator, _ := crypto.HexToECDSA("de9e861326d46d132312bc140468614a2d6b0c41ad6801f933d77129a1be4d4e")
 	validatorWallet := bind.NewKeyedTransactor(keyValidator)
-	validatorWallet.GasLimit = uint64(27821000)
+	validatorWallet.GasLimit = uint64(27821000) // VERY IMPORTANT!!!!!
 
 	// Use Ganache
 	blockchain, _ := ethclient.Dial("http://127.0.0.1:7545")
@@ -58,7 +59,6 @@ func TestAuthContract(t *testing.T) {
 
 	// DEPLOY_PROJECT_WALLET_AUTH_CONTRACT
 	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(ownerWallet, blockchain)
-
 	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
 
 	// SET_PROJECT_WALLET_AUTH_OWNER

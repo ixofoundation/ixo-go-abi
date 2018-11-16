@@ -6,137 +6,136 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	auth "github.com/ixofoundation/ixo-go-abi/abi/auth"
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
+	token "github.com/ixofoundation/ixo-go-abi/abi/token"
+	util "github.com/ixofoundation/ixo-go-abi/test/util"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestProjectRegistryContract(t *testing.T) {
 	// Use Ganache Account
-	key, _ := crypto.HexToECDSA("b6ad4d7b59a2766e94f9290740fd62676165684500c6d1331185912600e19481")
-	authorizer := bind.NewKeyedTransactor(key)
+	// Contract Owner Address
+	keyAuth, _ := crypto.HexToECDSA("d4291707c68a3e43e7f9a605f46d8bc2730af5023046a905b7028469d49cb868")
+	ownerWallet := bind.NewKeyedTransactor(keyAuth)
+	ownerWallet.GasLimit = uint64(27821000)
 
-	// Use Ganache 
+	// Evaluator Address
+	keyEval, _ := crypto.HexToECDSA("baf7af00a5f868db6ef8ca22ebbf69c131217ef08427c040d90931a803d98957")
+	evaluatorWallet := bind.NewKeyedTransactor(keyEval)
+
+	// Validator Address
+	keyValidator, _ := crypto.HexToECDSA("de9e861326d46d132312bc140468614a2d6b0c41ad6801f933d77129a1be4d4e")
+	validatorWallet := bind.NewKeyedTransactor(keyValidator)
+	validatorWallet.GasLimit = uint64(27821000) // VERY IMPORTANT!!!!!
+
+	// Use Ganache
 	blockchain, _ := ethclient.Dial("http://127.0.0.1:7545")
 
-	did := "WjU6gE1JhZANcdv3aC8PEJ"
-
 	var projectDid [32]byte
-	copy(projectDid[:], did)
-	t.Logf("ProjectDid Byte Array: %v", projectDid)
-	t.Logf("ProjectDid Byte Array: %v", string(projectDid[:]))
+	copy(projectDid[:], "WjU6gE1JhZANcdv3aC8PEJ")
 
 	callOpts := bind.CallOpts{
 		Pending: true,
-		From:    authorizer.From,
-	}
-
-	transOpts := bind.TransactOpts{
-		From:     authorizer.From,
-		Signer:   authorizer.Signer,
+		From:    ownerWallet.From,
 	}
 
 	// Deploy token contract
-	tokenContractAddress, _, _, _ := project.DeployIxoERC20Token(
-		authorizer,
+	ixoTokenAddress, _, ixoTokenContact, _ := token.DeployIxoERC20Token(
+		ownerWallet,
 		blockchain,
 	)
+	t.Logf("ERC20_ADDRESS: %v", ixoTokenAddress.Hex())
+
+	// Set minter
+	ixoTokenContact.SetMinter(ownerWallet, ownerWallet.From)
 
 	// Setup quorum
-	var quorum []common.Address
-	quorum = append(quorum, authorizer.From)
+	members := []common.Address{validatorWallet.From}
 
 	// Deploy auth contract
-	authContractAddress, _, _, _ := auth.DeployAuthContract(
-		authorizer,
+	authAddress, _, authContract, _ := auth.DeployAuthContract(
+		ownerWallet,
 		blockchain,
-		quorum,
+		members,
 		big.NewInt(1),
 	)
+	t.Logf("AUTH_CONTRACT_ADDRESS: %v", authAddress.Hex())
 
 	// Deploy factory contract
 	factoryContractAddress, _, _, _ := project.DeployProjectWalletFactory(
-		authorizer,
+		ownerWallet,
 		blockchain,
 	)
 
 	// Deploy project registry contract
-	_, _, projectRegistryContact, regDeployErr := project.DeployProjectWalletRegistry(
-		authorizer,
+	_, _, projectRegistryContact, _ := project.DeployProjectWalletRegistry(
+		ownerWallet,
 		blockchain,
-		tokenContractAddress,
-		authContractAddress,
+		ixoTokenAddress,
+		authAddress,
 		factoryContractAddress,
 	)
-	if regDeployErr != nil {
-		t.Errorf("ERROR: %v", regDeployErr)
-	}
 
-	t.Run("Renounce ownership", renounceOwnership(*projectRegistryContact, transOpts))
-	t.Run("Check ownership", checkOwnership(*projectRegistryContact, callOpts))
-	t.Run("Create project wallet", createProjectWallet(*projectRegistryContact, transOpts, projectDid))
-	t.Run("Check if project wallet exist", checkProjectWallet(*projectRegistryContact, callOpts, projectDid))
+	projectRegistryContact.SetFactory(ownerWallet, factoryContractAddress)
+
+	// DEPLOY_PROJECT_WALLET_AUTH_CONTRACT
+	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(ownerWallet, blockchain)
+	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
+
+	// SET_PROJECT_WALLET_AUTH_OWNER
+	projectWalletAuthContract.SetAuthoriser(ownerWallet, authAddress)
+
+	t.Run("Renounce ownership", renounceOwnership(*projectRegistryContact, *ownerWallet, callOpts))
+	t.Run("Create project wallet", createProjectWallet(*projectRegistryContact, *ownerWallet, callOpts, projectDid))
+	t.Run("Fund project wallet", fundProjectWallet(*projectRegistryContact, *ixoTokenContact, *ownerWallet, callOpts, projectDid))
+	t.Run("Pay evaluator from auth contract", payEvaluatorFromAuthContract(*projectRegistryContact, *authContract, projectWalletAuthAddress, evaluatorWallet.From, *validatorWallet, callOpts, projectDid, util.Random32Bytes()))
 }
 
-// util function to log transaction response
-func logTxnResponse(t *testing.T, transaction types.Transaction) {
-	txnResponse, _ := transaction.MarshalJSON()
-	response := string(txnResponse[:])
-	t.Logf("Transaction Response: %v", response)
-}
-
-func renounceOwnership(projectRegistryContact project.ProjectWalletRegistry, transOpts bind.TransactOpts) func(*testing.T) {
+func renounceOwnership(projectRegistryContact project.ProjectWalletRegistry, transOpts bind.TransactOpts, callOpts bind.CallOpts) func(*testing.T) {
 	return func(t *testing.T) {
-		transaction, renounceErr := projectRegistryContact.RenounceOwnership(&transOpts)
-
-		if renounceErr != nil {
-			t.Errorf("ERROR: %v", renounceErr)
-		}
-
-		logTxnResponse(t, *transaction)
+		projectRegistryContact.RenounceOwnership(&transOpts)
+		owner, _ := projectRegistryContact.Owner(&callOpts)
+		assert.EqualValues(t, owner.Hex(), "0x0000000000000000000000000000000000000000", "Owner should be: 0x0000000000000000000000000000000000000000")
 	}
 }
 
-func checkOwnership(projectRegistryContact project.ProjectWalletRegistry, callOpts bind.CallOpts) func(*testing.T) {
+func createProjectWallet(projectRegistryContact project.ProjectWalletRegistry, transOpts bind.TransactOpts, callOpts bind.CallOpts, projectDid [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
-
-		if owner, _ := projectRegistryContact.Owner(&callOpts); owner.String() != "0x0000000000000000000000000000000000000000" {
-			t.Errorf("Expected owner to be: 0x0000000000000000000000000000000000000000")
-		}
-
+		projectRegistryContact.EnsureWallet(&transOpts, projectDid)
+		projectWalletAddress, _ := projectRegistryContact.WalletOf(&callOpts, projectDid)
+		assert.NotEqual(t, projectWalletAddress, "0x0000000000000000000000000000000000000000", "Error creating project wallet!")
 	}
 }
 
-func createProjectWallet(projectRegistryContact project.ProjectWalletRegistry, transOpts bind.TransactOpts, projectDid [32]byte) func(*testing.T) {
+func fundProjectWallet(projectRegistryContact project.ProjectWalletRegistry, ixoTokenContract token.IxoERC20Token, ownerWallet bind.TransactOpts, callOpts bind.CallOpts, projectDid [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
-
-		t.Logf("Ensure Wallet: %v", string(projectDid[:]))
-
-		// create project wallet
-		transaction, walletErr := projectRegistryContact.EnsureWallet(&transOpts, projectDid)
-
-		if walletErr != nil {
-			t.Errorf("ERROR: %v", walletErr)
-		}
-		logTxnResponse(t, *transaction)
+		projectWalletAddress, _ := projectRegistryContact.WalletOf(&callOpts, projectDid)
+		t.Logf("walletAddress: %v", projectWalletAddress.Hex())
+		ixoTokenContract.Mint(&ownerWallet, projectWalletAddress, big.NewInt(500000000))
+		projectWalletBalance, _ := ixoTokenContract.BalanceOf(&callOpts, projectWalletAddress)
+		assert.EqualValues(t, big.NewInt(500000000), projectWalletBalance, "Error while funding project wallet!")
 	}
 }
 
-func checkProjectWallet(projectRegistryContact project.ProjectWalletRegistry, callOpts bind.CallOpts, projectDid [32]byte) func(*testing.T) {
+func payEvaluatorFromAuthContract(projectRegistryContact project.ProjectWalletRegistry, authContract auth.AuthContract, projectWalletAuthAddress common.Address, evaluatorAddress common.Address, validatorWallet bind.TransactOpts, callOpts bind.CallOpts, projectDid [32]byte, txID [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
-
-		t.Logf("WalletOf: %v", string(projectDid[:]))
 
 		projectWalletAddress, _ := projectRegistryContact.WalletOf(&callOpts, projectDid)
 
-		t.Logf("Wallet address: %v", projectWalletAddress.String())
+		t.Logf("WALLET_ADDRESS: %v", projectWalletAddress.Hex())
+		t.Logf("VALIDATOR_NODE_WALLET: %v", validatorWallet.From.Hex())
+		t.Logf("PROJECT_WALLET_AUTH: %v", projectWalletAuthAddress.Hex())
+		t.Logf("EVALUATOR_WALLET: %v", evaluatorAddress.Hex())
+		t.Logf("PROJECT_DID: %v", string(projectDid[:]))
+		t.Logf("TRANSACTION_ID: %v", string(txID[:]))
 
-		// TODO: Fix
-		if projectWalletAddress.String() == "0x0000000000000000000000000000000000000000" {
-			t.Logf("Project Wallet: %v", projectWalletAddress.String())
-			t.Errorf("Expected owner to be: 0x0000000000000000000000000000000000000000")
+		_, err := authContract.Validate(&validatorWallet, txID, projectWalletAuthAddress, projectWalletAddress, evaluatorAddress, big.NewInt(200000000))
+
+		if err != nil {
+			t.Errorf("Error: %v", err)
 		}
 
 	}
