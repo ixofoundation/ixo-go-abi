@@ -12,7 +12,6 @@ import (
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 	util "github.com/ixofoundation/ixo-go-abi/test/util"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthContract(t *testing.T) {
@@ -45,7 +44,6 @@ func TestAuthContract(t *testing.T) {
 		ownerWallet,
 		blockchain,
 	)
-	t.Logf("ERC20_ADDRESS: %v", ixoTokenAddress.Hex())
 
 	// SET_MINTER
 	ixoTokenContact.SetMinter(ownerWallet, ownerWallet.From)
@@ -55,11 +53,9 @@ func TestAuthContract(t *testing.T) {
 
 	// DEPLOY_AUTH_CONTRACT
 	authAddress, _, authContract, _ := auth.DeployAuthContract(ownerWallet, blockchain, members, big.NewInt(1))
-	t.Logf("AUTH_CONTRACT_ADDRESS: %v", authAddress.Hex())
 
 	// DEPLOY_PROJECT_WALLET_AUTH_CONTRACT
 	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(ownerWallet, blockchain)
-	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
 
 	// SET_PROJECT_WALLET_AUTH_OWNER
 	projectWalletAuthContract.SetAuthoriser(ownerWallet, authAddress)
@@ -72,7 +68,6 @@ func TestAuthContract(t *testing.T) {
 		projectWalletAuthAddress,
 		util.Random32Bytes(),
 	)
-	t.Logf("BASIC_PROJECT_WALLET_ADDRESS: %v", basicProjectWalletAddress.Hex())
 
 	// MINT_TOKENS_TO_PROJECT_WALLET
 	ixoTokenContact.Mint(ownerWallet, basicProjectWalletAddress, big.NewInt(800000000))
@@ -83,13 +78,10 @@ func TestAuthContract(t *testing.T) {
 
 func transferTokensUsingAuthContract(authContract auth.AuthContract, tokenContract token.IxoERC20Token, callOpts bind.CallOpts, transOpts bind.TransactOpts, txID [32]byte, projectWalletAuthAddress common.Address, basicProjectWalletAddress common.Address, evaluatorAddress common.Address, tokenAmount big.Int) func(*testing.T) {
 	return func(t *testing.T) {
-		t.Logf("VAL_NODE_ADDRESS: %v", transOpts.From.Hex())
-
 		_, err := authContract.Validate(&transOpts, txID, projectWalletAuthAddress, basicProjectWalletAddress, evaluatorAddress, &tokenAmount)
 		if err != nil {
 			t.Errorf("Error: %v", err)
 		}
-		evaluatorBalance, _ := tokenContract.BalanceOf(&callOpts, evaluatorAddress)
-		assert.EqualValues(t, &tokenAmount, evaluatorBalance, "Incorrect balance!")
+		util.CheckBalance(tokenContract, callOpts, evaluatorAddress, tokenAmount)
 	}
 }

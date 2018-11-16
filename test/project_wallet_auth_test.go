@@ -12,7 +12,6 @@ import (
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 	util "github.com/ixofoundation/ixo-go-abi/test/util"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestProjectWalletAuthContract(t *testing.T) {
@@ -38,14 +37,11 @@ func TestProjectWalletAuthContract(t *testing.T) {
 		ownerWallet,
 		blockchain,
 	)
-	t.Logf("ERC20_ADDRESS: %v", ixoTokenAddress.Hex())
 
 	// SET_MINTER
 	ixoTokenContact.SetMinter(ownerWallet, ownerWallet.From)
 
 	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(ownerWallet, blockchain)
-
-	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
 
 	// SET_PROJECT_WALLET_AUTH_OWNER
 	projectWalletAuthContract.SetAuthoriser(ownerWallet, ownerWallet.From)
@@ -57,7 +53,6 @@ func TestProjectWalletAuthContract(t *testing.T) {
 		projectWalletAuthAddress,
 		util.Random32Bytes(),
 	)
-	t.Logf("BASIC_PROJECT_WALLET_ADDRESS: %v", basicProjectWalletAddress.Hex())
 
 	// MINT_TOKENS_TO_PROJECT_WALLET
 	ixoTokenContact.Mint(ownerWallet, basicProjectWalletAddress, big.NewInt(800000000))
@@ -69,7 +64,6 @@ func TestProjectWalletAuthContract(t *testing.T) {
 func transferTokensUsingProjectWalletAuth(projectWalletAuthContract auth.ProjectWalletAuthoriser, tokenContract token.IxoERC20Token, callOpts bind.CallOpts, transOpts bind.TransactOpts, basicProjectWalletAddress common.Address, evaluatorAddress common.Address, tokenAmount big.Int) func(*testing.T) {
 	return func(t *testing.T) {
 		projectWalletAuthContract.Transfer(&transOpts, basicProjectWalletAddress, evaluatorAddress, &tokenAmount)
-		evaluatorBalance, _ := tokenContract.BalanceOf(&callOpts, evaluatorAddress)
-		assert.EqualValues(t, &tokenAmount, evaluatorBalance, "Incorrect balance!")
+		util.CheckBalance(tokenContract, callOpts, evaluatorAddress, tokenAmount)
 	}
 }

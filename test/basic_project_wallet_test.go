@@ -12,7 +12,6 @@ import (
 	project "github.com/ixofoundation/ixo-go-abi/abi/project"
 	token "github.com/ixofoundation/ixo-go-abi/abi/token"
 	util "github.com/ixofoundation/ixo-go-abi/test/util"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestBasicProjectWalletContract(t *testing.T) {
@@ -39,7 +38,6 @@ func TestBasicProjectWalletContract(t *testing.T) {
 		ownerWallet,
 		blockchain,
 	)
-	t.Logf("ERC20_ADDRESS: %v", ixoTokenAddress.Hex())
 
 	// SET_MINTER
 	ixoTokenContact.SetMinter(ownerWallet, ownerWallet.From)
@@ -51,7 +49,6 @@ func TestBasicProjectWalletContract(t *testing.T) {
 		ownerWallet.From,
 		Random32Bytes(),
 	)
-	t.Logf("BASIC_PROJECT_WALLET_ADDRESS: %v", basicProjectWalletAddress.Hex())
 
 	// MINT_TOKENS_TO_PROJECT_WALLET
 	ixoTokenContact.Mint(ownerWallet, basicProjectWalletAddress, big.NewInt(800000000))
@@ -76,15 +73,13 @@ func Random32Bytes() [32]byte {
 
 func CheckBalanceOnBasicProjectWallet(tokenContract token.IxoERC20Token, callOpts bind.CallOpts, basicProjectWalletAddress common.Address, expectedBalance big.Int) func(*testing.T) {
 	return func(t *testing.T) {
-		balance, _ := tokenContract.BalanceOf(&callOpts, basicProjectWalletAddress)
-		assert.EqualValues(t, &expectedBalance, balance, "Incorrect balance!")
+		util.CheckBalance(tokenContract, callOpts, basicProjectWalletAddress, expectedBalance)
 	}
 }
 
 func transferTokensFromBasicProjectWallet(basicProjectWalletContract project.BasicProjectWallet, tokenContract token.IxoERC20Token, callOpts bind.CallOpts, transOpts bind.TransactOpts, evaluatorAddress common.Address, tokenAmount big.Int) func(*testing.T) {
 	return func(t *testing.T) {
 		basicProjectWalletContract.Transfer(&transOpts, evaluatorAddress, &tokenAmount)
-		evaluatorBalance, _ := tokenContract.BalanceOf(&callOpts, evaluatorAddress)
-		assert.EqualValues(t, &tokenAmount, evaluatorBalance, "Incorrect balance!")
+		util.CheckBalance(tokenContract, callOpts, evaluatorAddress, tokenAmount)
 	}
 }

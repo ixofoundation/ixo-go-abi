@@ -47,7 +47,6 @@ func TestProjectRegistryContract(t *testing.T) {
 		ownerWallet,
 		blockchain,
 	)
-	t.Logf("ERC20_ADDRESS: %v", ixoTokenAddress.Hex())
 
 	// Set minter
 	ixoTokenContact.SetMinter(ownerWallet, ownerWallet.From)
@@ -62,7 +61,6 @@ func TestProjectRegistryContract(t *testing.T) {
 		members,
 		big.NewInt(1),
 	)
-	t.Logf("AUTH_CONTRACT_ADDRESS: %v", authAddress.Hex())
 
 	// Deploy factory contract
 	factoryContractAddress, _, _, _ := project.DeployProjectWalletFactory(
@@ -70,20 +68,18 @@ func TestProjectRegistryContract(t *testing.T) {
 		blockchain,
 	)
 
+	// DEPLOY_PROJECT_WALLET_AUTH_CONTRACT
+	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(ownerWallet, blockchain)
+
 	// Deploy project registry contract
 	_, _, projectRegistryContact, _ := project.DeployProjectWalletRegistry(
 		ownerWallet,
 		blockchain,
 		ixoTokenAddress,
-		authAddress,
+		projectWalletAuthAddress,
 		factoryContractAddress,
 	)
-
 	projectRegistryContact.SetFactory(ownerWallet, factoryContractAddress)
-
-	// DEPLOY_PROJECT_WALLET_AUTH_CONTRACT
-	projectWalletAuthAddress, _, projectWalletAuthContract, _ := auth.DeployProjectWalletAuthoriser(ownerWallet, blockchain)
-	t.Logf("PROJECT_WALLET_AUTH_ADDRESS: %v", projectWalletAuthAddress.Hex())
 
 	// SET_PROJECT_WALLET_AUTH_OWNER
 	projectWalletAuthContract.SetAuthoriser(ownerWallet, authAddress)
@@ -113,30 +109,17 @@ func createProjectWallet(projectRegistryContact project.ProjectWalletRegistry, t
 func fundProjectWallet(projectRegistryContact project.ProjectWalletRegistry, ixoTokenContract token.IxoERC20Token, ownerWallet bind.TransactOpts, callOpts bind.CallOpts, projectDid [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
 		projectWalletAddress, _ := projectRegistryContact.WalletOf(&callOpts, projectDid)
-		t.Logf("walletAddress: %v", projectWalletAddress.Hex())
 		ixoTokenContract.Mint(&ownerWallet, projectWalletAddress, big.NewInt(500000000))
-		projectWalletBalance, _ := ixoTokenContract.BalanceOf(&callOpts, projectWalletAddress)
-		assert.EqualValues(t, big.NewInt(500000000), projectWalletBalance, "Error while funding project wallet!")
+		util.CheckBalance(ixoTokenContract, callOpts, projectWalletAddress, *big.NewInt(500000000))
 	}
 }
 
 func payEvaluatorFromAuthContract(projectRegistryContact project.ProjectWalletRegistry, authContract auth.AuthContract, projectWalletAuthAddress common.Address, evaluatorAddress common.Address, validatorWallet bind.TransactOpts, callOpts bind.CallOpts, projectDid [32]byte, txID [32]byte) func(*testing.T) {
 	return func(t *testing.T) {
-
 		projectWalletAddress, _ := projectRegistryContact.WalletOf(&callOpts, projectDid)
-
-		t.Logf("WALLET_ADDRESS: %v", projectWalletAddress.Hex())
-		t.Logf("VALIDATOR_NODE_WALLET: %v", validatorWallet.From.Hex())
-		t.Logf("PROJECT_WALLET_AUTH: %v", projectWalletAuthAddress.Hex())
-		t.Logf("EVALUATOR_WALLET: %v", evaluatorAddress.Hex())
-		t.Logf("PROJECT_DID: %v", string(projectDid[:]))
-		t.Logf("TRANSACTION_ID: %v", string(txID[:]))
-
 		_, err := authContract.Validate(&validatorWallet, txID, projectWalletAuthAddress, projectWalletAddress, evaluatorAddress, big.NewInt(200000000))
-
 		if err != nil {
 			t.Errorf("Error: %v", err)
 		}
-
 	}
 }
